@@ -83,15 +83,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 String date_HHmm = sdf_HHmm.format(new Date());
 
                 //String myDate = df.parse(myString);
-                Log.e(LOG_TAG, "год= " + date_yyyy + " месяц/число = "+date_MMdd + " ");
+                Log.e(LOG_TAG, "год= " + date_yyyy + " месяц/число= "+date_MMdd + " HHmm= "+date_HHmm);
                 // подготовим данные для вставки в виде пар: наименование столбца - значение
 
-                cv.put("date", name);
-                cv.put("time", email);
-                cv.put("status", name);
+//                cv.put("date", name);
+//                cv.put("time", email);
+//                cv.put("status", name);
                 // вставляем запись и получаем ее ID
-                long rowID = db.insert("mytable", null, cv);
-                Log.d(LOG_TAG, "row inserted, ID = " + rowID);
+//                long rowID = db.insert("mytable", null, cv);
+//                Log.d(LOG_TAG, "row inserted, ID = " + rowID);
                 break;
 
             case R.id.btnFood:
