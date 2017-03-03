@@ -1,27 +1,21 @@
 package ru.sappstudio.mothershelper;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -30,6 +24,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
     ImageButton btnSleap, btnFood, btnGame, btnWalk;
 
     DBHelper dbHelper;
+
+    SimpleDateFormat sdf_yyyy = new SimpleDateFormat("yyyy");
+    String year_yyyy = sdf_yyyy.format(new Date());
+
+    SimpleDateFormat sdf_MM = new SimpleDateFormat("MM");
+    String month_MM = sdf_MM.format(new Date());
+
+    SimpleDateFormat sdf_dd = new SimpleDateFormat("dd");
+    String day_dd = sdf_dd.format(new Date());
+
+    SimpleDateFormat sdf_HHmm = new SimpleDateFormat("HHmm");
+    String time_HHmm = sdf_HHmm.format(new Date());
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -70,42 +76,73 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         switch (v.getId()) {
             case R.id.btnSleap:
-                btnSleap.setImageResource(R.drawable.krovat2);
-                Log.d(LOG_TAG, "--- Insert in sleap: ---");
 
-                SimpleDateFormat sdf_yyyy = new SimpleDateFormat("yyyy");
-                String date_yyyy = sdf_yyyy.format(new Date());
+                Log.e(LOG_TAG, "--- Rows in sleap: ---");
+                // делаем запрос всех данных из таблицы mytable, получаем Cursor
+                Cursor c = db.query("sleap", null, null, null, null, null, null);
 
-                SimpleDateFormat sdf_MMdd = new SimpleDateFormat("MMdd");
-                String date_MMdd = sdf_MMdd.format(new Date());
+                // ставим позицию курсора на первую строку выборки
+                // если в выборке нет строк, вернется false
+                if (c.moveToFirst()) {
 
-                SimpleDateFormat sdf_HHmm = new SimpleDateFormat("HHmm");
-                String date_HHmm = sdf_HHmm.format(new Date());
+                    // определяем номера столбцов по имени в выборке
+                    int idColIndex = c.getColumnIndex("id");
+                    int year_yyyy_ColIndex = c.getColumnIndex("year_yyyy");
+                    int month_MM_ColIndex = c.getColumnIndex("month_MM");
+                    int day_dd_ColIndex = c.getColumnIndex("day_dd");
+                    int time_HHmm_ColIndex = c.getColumnIndex("time_HHmm");
+                    int status_ColIndex = c.getColumnIndex("status");
 
-                //String myDate = df.parse(myString);
-                Log.e(LOG_TAG, "год= " + date_yyyy + " месяц/число= "+date_MMdd + " HHmm= "+date_HHmm);
-                // подготовим данные для вставки в виде пар: наименование столбца - значение
+                    do {
+                        // получаем значения по номерам столбцов и пишем все в лог
+                        Log.d(LOG_TAG,
+                                "ID = " + c.getInt(idColIndex) +
+                                        ", year_yyyy = " + c.getString(year_yyyy_ColIndex) +
+                                        ", month_MM = " + c.getString(month_MM_ColIndex));
+                        // переход на следующую строку
+                        // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                    } while (c.moveToNext());
+                } else {
+                    Log.d(LOG_TAG, "DB = null");
+                    btnSleap.setImageResource(R.drawable.krovat2);
+                    Log.e(LOG_TAG, "--- Insert in sleap: ---");
+                    updateDate();
+                    Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
 
-//                cv.put("date", name);
-//                cv.put("time", email);
-//                cv.put("status", name);
-                // вставляем запись и получаем ее ID
-//                long rowID = db.insert("mytable", null, cv);
-//                Log.d(LOG_TAG, "row inserted, ID = " + rowID);
-                break;
+                    cv.put("year", year_yyyy);
+                    cv.put("month_MM", month_MM);
+                    cv.put("time_dd", day_dd);
+                    cv.put("time_HHmm", time_HHmm);
+                    cv.put("status", "start");
+
+                    // вставляем запись и получаем ее ID
+                    long rowID = db.insert("Sleap", null, cv);
+                    Log.e(LOG_TAG, "row inserted, ID = " + rowID);
+                }
+
+                c.close();
+            break;
 
             case R.id.btnFood:
                 btnFood.setImageResource(R.drawable.but);
-                break;
+            break;
 
             case R.id.btnGame:
                 btnGame.setImageResource(R.drawable.activ);
-                break;
+            break;
 
             case R.id.btnWalk:
                 btnWalk.setImageResource(R.drawable.kalaska);
-                break;
+            break;
         }
+    }
+
+    public void updateDate()    //обновляем дату(и время)
+    {
+        year_yyyy = sdf_yyyy.format(new Date());
+        month_MM = sdf_MM.format(new Date());
+        day_dd = sdf_dd.format(new Date());
+        time_HHmm = sdf_HHmm.format(new Date());
     }
 
     @Override
