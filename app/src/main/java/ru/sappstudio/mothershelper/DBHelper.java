@@ -21,10 +21,10 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d(LOG_TAG, "--- onCreate database ---");
         // создаем таблицу с полями
-        db.execSQL("create table mytable ("
+        db.execSQL("create table Sleap ("
                 + "id integer primary key autoincrement,"
-                + "name text,"
-                + "email text" + ");");
+                + "year_yyyy integer,"
+                + "month_MM integer," + "day_dd integer,"+"time_HHmm integer,"+"status string"+");");
     }
 
     @Override

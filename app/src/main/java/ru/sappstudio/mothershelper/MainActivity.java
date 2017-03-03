@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -26,16 +27,16 @@ public class MainActivity extends Activity implements View.OnClickListener {
     DBHelper dbHelper;
 
     SimpleDateFormat sdf_yyyy = new SimpleDateFormat("yyyy");
-    String year_yyyy = sdf_yyyy.format(new Date());
+    int year_yyyy = Integer.valueOf(sdf_yyyy.format(new Date()));
 
     SimpleDateFormat sdf_MM = new SimpleDateFormat("MM");
-    String month_MM = sdf_MM.format(new Date());
+    int month_MM = Integer.valueOf(sdf_MM.format(new Date()));
 
     SimpleDateFormat sdf_dd = new SimpleDateFormat("dd");
-    String day_dd = sdf_dd.format(new Date());
+    int day_dd = Integer.valueOf(sdf_dd.format(new Date()));
 
     SimpleDateFormat sdf_HHmm = new SimpleDateFormat("HHmm");
-    String time_HHmm = sdf_HHmm.format(new Date());
+    int time_HHmm = Integer.valueOf(sdf_HHmm.format(new Date()));
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -61,6 +62,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // создаем объект для создания и управления версиями БД
         dbHelper = new DBHelper(this);
+        initDate();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -69,58 +71,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        // создаем объект для данных
-        ContentValues cv = new ContentValues();
-        // подключаемся к БД
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         switch (v.getId()) {
             case R.id.btnSleap:
-
-                Log.e(LOG_TAG, "--- Rows in sleap: ---");
-                // делаем запрос всех данных из таблицы mytable, получаем Cursor
-                Cursor c = db.query("sleap", null, null, null, null, null, null);
-
-                // ставим позицию курсора на первую строку выборки
-                // если в выборке нет строк, вернется false
-                if (c.moveToFirst()) {
-
-                    // определяем номера столбцов по имени в выборке
-                    int idColIndex = c.getColumnIndex("id");
-                    int year_yyyy_ColIndex = c.getColumnIndex("year_yyyy");
-                    int month_MM_ColIndex = c.getColumnIndex("month_MM");
-                    int day_dd_ColIndex = c.getColumnIndex("day_dd");
-                    int time_HHmm_ColIndex = c.getColumnIndex("time_HHmm");
-                    int status_ColIndex = c.getColumnIndex("status");
-
-                    do {
-                        // получаем значения по номерам столбцов и пишем все в лог
-                        Log.d(LOG_TAG,
-                                "ID = " + c.getInt(idColIndex) +
-                                        ", year_yyyy = " + c.getString(year_yyyy_ColIndex) +
-                                        ", month_MM = " + c.getString(month_MM_ColIndex));
-                        // переход на следующую строку
-                        // а если следующей нет (текущая - последняя), то false - выходим из цикла
-                    } while (c.moveToNext());
-                } else {
-                    Log.d(LOG_TAG, "DB = null");
-                    btnSleap.setImageResource(R.drawable.krovat2);
-                    Log.e(LOG_TAG, "--- Insert in sleap: ---");
-                    updateDate();
-                    Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
-
-                    cv.put("year", year_yyyy);
-                    cv.put("month_MM", month_MM);
-                    cv.put("time_dd", day_dd);
-                    cv.put("time_HHmm", time_HHmm);
-                    cv.put("status", "start");
-
-                    // вставляем запись и получаем ее ID
-                    long rowID = db.insert("Sleap", null, cv);
-                    Log.e(LOG_TAG, "row inserted, ID = " + rowID);
-                }
-
-                c.close();
+                clickSleap();
             break;
 
             case R.id.btnFood:
@@ -137,12 +90,172 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    public void clickSleap()    //обновляем дату(и время)
+    {
+        // создаем объект для данных
+        ContentValues cv = new ContentValues();
+        // подключаемся к БД
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //dbHelper.onCreate(db);
+
+        Log.e(LOG_TAG, "--- Rows in sleap: ---");
+        // делаем запрос всех данных из таблицы sleap, получаем Cursor
+        Cursor c = db.query("Sleap", null, null, null, null, null, null);
+
+        // ставим позицию курсора на первую строку выборки
+        // если в выборке нет строк, вернется false
+        if (c.moveToFirst()) {
+
+            // определяем номера столбцов по имени в выборке
+            int idColIndex = c.getColumnIndex("id");
+            int year_yyyy_ColIndex = c.getColumnIndex("year_yyyy");
+            int month_MM_ColIndex = c.getColumnIndex("month_MM");
+            int day_dd_ColIndex = c.getColumnIndex("day_dd");
+            int time_HHmm_ColIndex = c.getColumnIndex("time_HHmm");
+            int status_ColIndex = c.getColumnIndex("status");
+
+            do {
+                // получаем значения по номерам столбцов и пишем все в лог
+//                Log.e(LOG_TAG,
+//                        "ID = " + c.getInt(idColIndex) +
+//                                ", year_yyyy = " + c.getInt(year_yyyy_ColIndex) +
+//                                ", month_MM = " + c.getInt(month_MM_ColIndex)+
+//                                ", day_dd = " + c.getInt(day_dd_ColIndex)+
+//                                ", time_HHmm = " + c.getInt(time_HHmm_ColIndex)+
+//                                ", status = " + c.getString(status_ColIndex));
+                // переход на следующую строку
+                // а если следующей нет (текущая - последняя), то false - выходим из цикла
+            } while (c.moveToNext());
+            c.moveToLast();
+            updateDate();
+//            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
+            if(c.getString(status_ColIndex).equals("start"))
+            {
+                if ((c.getInt(year_yyyy_ColIndex)<=year_yyyy) &&(c.getInt(month_MM_ColIndex)<=month_MM)&&(time_HHmm-c.getInt(time_HHmm_ColIndex))>3) {
+                    btnSleap.setImageResource(R.drawable.krovat2_w);
+//                    Log.e(LOG_TAG, "--- Insert in Sleap: ---");
+//
+//                    cv.put("year_yyyy", year_yyyy);
+//                    cv.put("month_MM", month_MM);
+//                    cv.put("day_dd", day_dd);
+//                    cv.put("time_HHmm", time_HHmm);
+//                    cv.put("status", "stop");
+
+                    // вставляем запись и получаем ее ID
+                    long rowID = db.insert("Sleap", null, cv);
+                    Log.e(LOG_TAG, "row inserted, ID = " + rowID);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Проснулась!)", Toast.LENGTH_LONG);
+                    toast.show();
+                }else{
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Не прошло и 3 минут. Отмена действия!)", Toast.LENGTH_LONG);
+                    toast.show();
+                    // удаляем последнюю запись
+                    int clearCount = db.delete("Sleap", String.valueOf(c.getInt(idColIndex)),null);
+                    Log.e(LOG_TAG, "deleted rows count = " + clearCount);
+                    btnSleap.setImageResource(R.drawable.krovat2_w);
+
+                    c.moveToFirst();
+                    do {
+                        // получаем значения по номерам столбцов и пишем все в лог
+                        Log.e(LOG_TAG,
+                                "ID = " + c.getInt(idColIndex) +
+                                        ", year_yyyy = " + c.getInt(year_yyyy_ColIndex) +
+                                        ", month_MM = " + c.getInt(month_MM_ColIndex)+
+                                        ", day_dd = " + c.getInt(day_dd_ColIndex)+
+                                        ", time_HHmm = " + c.getInt(time_HHmm_ColIndex)+
+                                        ", status = " + c.getString(status_ColIndex));
+                        // переход на следующую строку
+                        // а если следующей нет (текущая - последняя), то false - выходим из цикла
+                    } while (c.moveToNext());
+                }
+            }else
+            {
+                Log.e(LOG_TAG, "DB = null");
+                btnSleap.setImageResource(R.drawable.krovat2);
+                Log.e(LOG_TAG, "--- Insert in Sleap: ---");
+                updateDate();
+//                Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
+
+                cv.put("year_yyyy", year_yyyy);
+                cv.put("month_MM", month_MM);
+                cv.put("day_dd", day_dd);
+                cv.put("time_HHmm", time_HHmm);
+                cv.put("status", "start");
+
+                // вставляем запись и получаем ее ID
+                long rowID = db.insert("Sleap", null, cv);
+                Log.e(LOG_TAG, "row inserted, ID = " + rowID);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Уснула...", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        } else {
+            Log.e(LOG_TAG, "DB = null");
+            btnSleap.setImageResource(R.drawable.krovat2);
+            Log.e(LOG_TAG, "--- Insert in Sleap: ---");
+            updateDate();
+//            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
+
+            cv.put("year_yyyy", year_yyyy);
+            cv.put("month_MM", month_MM);
+            cv.put("day_dd", day_dd);
+            cv.put("time_HHmm", time_HHmm);
+            cv.put("status", "start");
+
+            // вставляем запись и получаем ее ID
+            long rowID = db.insert("Sleap", null, cv);
+            Log.e(LOG_TAG, "row inserted, ID = " + rowID);
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Уснула...", Toast.LENGTH_LONG);
+            toast.show();
+        }
+
+
+        c.close();
+    }
+
     public void updateDate()    //обновляем дату(и время)
     {
-        year_yyyy = sdf_yyyy.format(new Date());
-        month_MM = sdf_MM.format(new Date());
-        day_dd = sdf_dd.format(new Date());
-        time_HHmm = sdf_HHmm.format(new Date());
+        year_yyyy = Integer.valueOf(sdf_yyyy.format(new Date()));
+        month_MM = Integer.valueOf(sdf_MM.format(new Date()));
+        day_dd = Integer.valueOf(sdf_dd.format(new Date()));
+        time_HHmm = Integer.valueOf(sdf_HHmm.format(new Date()));
+    }
+
+    public void initDate()    //обновляем дату(и время)
+    {
+        // создаем объект для данных
+        ContentValues cv = new ContentValues();
+        // подключаемся к БД
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //dbHelper.onCreate(db);
+
+        // делаем запрос всех данных из таблицы sleap, получаем Cursor
+        Cursor c = db.query("Sleap", null, null, null, null, null, null);
+
+        // ставим позицию курсора на первую строку выборки
+        // если в выборке нет строк, вернется false
+        if (c.moveToFirst()) {
+
+            // определяем номера столбцов по имени в выборке
+            int status_ColIndex = c.getColumnIndex("status");
+
+            do {
+            } while (c.moveToNext());
+
+            c.moveToLast();
+            Log.e(LOG_TAG, "Sleap status = " + c.getString(status_ColIndex));
+
+            if (c.getString(status_ColIndex).equals("start")) {
+                btnSleap.setImageResource(R.drawable.krovat2);
+            } else {
+                btnSleap.setImageResource(R.drawable.krovat2_w);
+            }
+        }
+        c.close();
+
     }
 
     @Override
