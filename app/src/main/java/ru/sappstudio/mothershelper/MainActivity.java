@@ -131,7 +131,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
             if(c.getString(status_ColIndex).equals("start"))
             {
-                if ((c.getInt(year_yyyy_ColIndex)<=year_yyyy) &&(c.getInt(month_MM_ColIndex)<=month_MM)&&(time_HHmm-c.getInt(time_HHmm_ColIndex))>3) {
+                Log.e(LOG_TAG,"нов="+String.valueOf(year_yyyy)+
+                        String.valueOf(month_MM)+
+                        String.valueOf(day_dd)+
+                        String.valueOf(time_HHmm));
+                Log.e(LOG_TAG,"Стар="+String.valueOf(c.getInt(year_yyyy_ColIndex))+
+                        String.valueOf(c.getInt(month_MM_ColIndex))+
+                        String.valueOf(c.getInt(day_dd_ColIndex))+
+                        String.valueOf(c.getInt(time_HHmm_ColIndex)));
+
+                if ( Integer.valueOf(String.valueOf(year_yyyy)+
+                                String.valueOf(month_MM)+
+                                String.valueOf(day_dd)+
+                                String.valueOf(time_HHmm))-
+                        Integer.valueOf(String.valueOf(c.getInt(year_yyyy_ColIndex))+
+                                String.valueOf(c.getInt(month_MM_ColIndex))+
+                                String.valueOf(c.getInt(day_dd_ColIndex))+
+                                String.valueOf(c.getInt(time_HHmm_ColIndex)))>5)
+                {
                     btnSleap.setImageResource(R.drawable.krovat2_w);
 //                    Log.e(LOG_TAG, "--- Insert in Sleap: ---");
 //
