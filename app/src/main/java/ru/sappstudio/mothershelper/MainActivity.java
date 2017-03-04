@@ -9,13 +9,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -37,11 +39,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     SimpleDateFormat sdf_HHmm = new SimpleDateFormat("HHmm");
     int time_HHmm = Integer.valueOf(sdf_HHmm.format(new Date()));
+
+
+    ArrayList<LVEvent> eventArrayList = new ArrayList<LVEvent>();
+    LVEventAdapter lvEventAdapter;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
+   // private GoogleApiClient client;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,11 +68,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // создаем объект для создания и управления версиями БД
         dbHelper = new DBHelper(this);
-        initDate();
+
+
+        // создаем адаптер
+        lvEventAdapter = new LVEventAdapter(this, eventArrayList);
+        initData();
+
+        // настраиваем список
+        ListView listOfEvents = (ListView) findViewById(R.id.listOfEvents);
+        listOfEvents.setAdapter(lvEventAdapter);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
@@ -150,13 +164,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                                 String.valueOf(c.getInt(time_HHmm_ColIndex)))>5)
                 {
                     btnSleap.setImageResource(R.drawable.krovat2_w);
-//                    Log.e(LOG_TAG, "--- Insert in Sleap: ---");
-//
-//                    cv.put("year_yyyy", year_yyyy);
-//                    cv.put("month_MM", month_MM);
-//                    cv.put("day_dd", day_dd);
-//                    cv.put("time_HHmm", time_HHmm);
-//                    cv.put("status", "stop");
+                    Log.e(LOG_TAG, "--- Insert in Sleap: ---");
+
+                    cv.put("year_yyyy", year_yyyy);
+                    cv.put("month_MM", month_MM);
+                    cv.put("day_dd", day_dd);
+                    cv.put("time_HHmm", time_HHmm);
+                    cv.put("status", "stop");
 
                     // вставляем запись и получаем ее ID
                     long rowID = db.insert("Sleap", null, cv);
@@ -166,7 +180,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     toast.show();
                 }else{
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Не прошло и 3 минут. Отмена действия!)", Toast.LENGTH_LONG);
+                            "Не прошло и 5 минут.\n  Отмена действия!)", Toast.LENGTH_LONG);
                     toast.show();
                     // удаляем последнюю запись
                     int clearCount = db.delete("Sleap", String.valueOf(c.getInt(idColIndex)),null);
@@ -241,7 +255,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         time_HHmm = Integer.valueOf(sdf_HHmm.format(new Date()));
     }
 
-    public void initDate()    //обновляем дату(и время)
+    public void initData()    //обновляем данные
     {
         // создаем объект для данных
         ContentValues cv = new ContentValues();
@@ -257,9 +271,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         if (c.moveToFirst()) {
 
             // определяем номера столбцов по имени в выборке
+            int idColIndex = c.getColumnIndex("id");
+            int year_yyyy_ColIndex = c.getColumnIndex("year_yyyy");
+            int month_MM_ColIndex = c.getColumnIndex("month_MM");
+            int day_dd_ColIndex = c.getColumnIndex("day_dd");
+            int time_HHmm_ColIndex = c.getColumnIndex("time_HHmm");
             int status_ColIndex = c.getColumnIndex("status");
 
             do {
+                eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cон","1-00",c.getString(time_HHmm_ColIndex),c.getString(time_HHmm_ColIndex),R.drawable.status_stop));
             } while (c.moveToNext());
 
             c.moveToLast();
@@ -275,24 +295,25 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
+//        client.connect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "Main Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
@@ -301,18 +322,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Main Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
+//        Action viewAction = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "Main Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.end(client, viewAction);
+//        client.disconnect();
     }
 
 //
