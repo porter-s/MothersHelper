@@ -88,6 +88,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btnSleap:
                 clickSleap();
+                initData();
+                lvEventAdapter.notifyDataSetChanged();
             break;
 
             case R.id.btnFood:
@@ -183,8 +185,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             "Не прошло и 5 минут.\n  Отмена действия!)", Toast.LENGTH_LONG);
                     toast.show();
                     // удаляем последнюю запись
-                    int clearCount = db.delete("Sleap", String.valueOf(c.getInt(idColIndex)),null);
-                    Log.e(LOG_TAG, "deleted rows count = " + clearCount);
+                    int clearCount = db.delete("Sleap", "id = "+String.valueOf(c.getInt(idColIndex)),null);
+                    Log.e(LOG_TAG, "deleted rows count = " + clearCount + " id = "+String.valueOf(c.getInt(idColIndex)));
                     btnSleap.setImageResource(R.drawable.krovat2_w);
 
                     c.moveToFirst();
@@ -265,7 +267,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // делаем запрос всех данных из таблицы sleap, получаем Cursor
         Cursor c = db.query("Sleap", null, null, null, null, null, null);
-
+        eventArrayList.clear();
         // ставим позицию курсора на первую строку выборки
         // если в выборке нет строк, вернется false
         if (c.moveToFirst()) {
@@ -277,9 +279,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
             int day_dd_ColIndex = c.getColumnIndex("day_dd");
             int time_HHmm_ColIndex = c.getColumnIndex("time_HHmm");
             int status_ColIndex = c.getColumnIndex("status");
-
+            updateDate();
             do {
-                eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cон","1-00",c.getString(time_HHmm_ColIndex),c.getString(time_HHmm_ColIndex),R.drawable.status_stop));
+                if((month_MM ==c.getInt(month_MM_ColIndex))&&(day_dd==c.getInt(day_dd_ColIndex)))
+                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cпит","0:55",c.getString(time_HHmm_ColIndex),c.getString(time_HHmm_ColIndex),R.drawable.status_stop));
             } while (c.moveToNext());
 
             c.moveToLast();
