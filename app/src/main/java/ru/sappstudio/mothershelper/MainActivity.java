@@ -256,7 +256,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         year_yyyy = Integer.valueOf(sdf_yyyy.format(new Date()));
         month_MM = Integer.valueOf(sdf_MM.format(new Date()));
         day_dd = Integer.valueOf(sdf_dd.format(new Date()));
-        time_HHmm = Integer.valueOf(sdf_HHmm.format(new Date()));
+        time_HH = Integer.valueOf(sdf_HH.format(new Date()));
+        time_mm = Integer.valueOf(sdf_mm.format(new Date()));
     }
 
     public void initData()    //обновляем данные
@@ -290,7 +291,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             updateDate();
             do {
                 if((month_MM ==c.getInt(month_MM_s_ColIndex))&&(day_dd==c.getInt(day_dd_s_ColIndex)))
-                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cпит","0:55",c.getString(time_HH_ColIndex),c.getString(time_mm_ColIndex),R.drawable.status_stop));
+                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cпит","0:55",c.getString(time_HH_s_ColIndex)
+                            +":"+c.getString(time_mm_s_ColIndex),c.getString(time_mm_s_ColIndex),R.drawable.status_stop));
             } while (c.moveToNext());
 
             c.moveToLast();
