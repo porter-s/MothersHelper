@@ -37,9 +37,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     SimpleDateFormat sdf_dd = new SimpleDateFormat("dd");
     int day_dd = Integer.valueOf(sdf_dd.format(new Date()));
 
-    SimpleDateFormat sdf_HHmm = new SimpleDateFormat("HHmm");
-    int time_HHmm = Integer.valueOf(sdf_HHmm.format(new Date()));
+    SimpleDateFormat sdf_HH = new SimpleDateFormat("HH");
+    int time_HH = Integer.valueOf(sdf_HH.format(new Date()));
 
+    SimpleDateFormat sdf_mm = new SimpleDateFormat("mm");
+    int time_mm = Integer.valueOf(sdf_mm.format(new Date()));
 
     ArrayList<LVEvent> eventArrayList = new ArrayList<LVEvent>();
     LVEventAdapter lvEventAdapter;
@@ -274,15 +276,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             // определяем номера столбцов по имени в выборке
             int idColIndex = c.getColumnIndex("id");
-            int year_yyyy_ColIndex = c.getColumnIndex("year_yyyy");
-            int month_MM_ColIndex = c.getColumnIndex("month_MM");
-            int day_dd_ColIndex = c.getColumnIndex("day_dd");
-            int time_HHmm_ColIndex = c.getColumnIndex("time_HHmm");
+            int year_yyyy_s_ColIndex = c.getColumnIndex("year_yyyy_s");
+            int month_MM_s_ColIndex = c.getColumnIndex("month_MM_s");
+            int day_dd_s_ColIndex = c.getColumnIndex("day_dd_s");
+            int time_HH_s_ColIndex = c.getColumnIndex("time_HH_s");
+            int time_mm_s_ColIndex = c.getColumnIndex("time_mm_s");
+            int year_yyyy_e_ColIndex = c.getColumnIndex("year_yyyy_e");
+            int month_MM_e_ColIndex = c.getColumnIndex("month_MM_e");
+            int day_dd_e_ColIndex = c.getColumnIndex("day_dd_e");
+            int time_HH_e_ColIndex = c.getColumnIndex("time_HH_e");
+            int time_mm_e_ColIndex = c.getColumnIndex("time_mm_e");
             int status_ColIndex = c.getColumnIndex("status");
             updateDate();
             do {
-                if((month_MM ==c.getInt(month_MM_ColIndex))&&(day_dd==c.getInt(day_dd_ColIndex)))
-                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cпит","0:55",c.getString(time_HHmm_ColIndex),c.getString(time_HHmm_ColIndex),R.drawable.status_stop));
+                if((month_MM ==c.getInt(month_MM_s_ColIndex))&&(day_dd==c.getInt(day_dd_s_ColIndex)))
+                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cпит","0:55",c.getString(time_HH_ColIndex),c.getString(time_mm_ColIndex),R.drawable.status_stop));
             } while (c.moveToNext());
 
             c.moveToLast();
