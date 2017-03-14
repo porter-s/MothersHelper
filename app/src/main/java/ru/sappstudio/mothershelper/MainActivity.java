@@ -126,10 +126,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             // определяем номера столбцов по имени в выборке
             int idColIndex = c.getColumnIndex("id");
-            int year_yyyy_ColIndex = c.getColumnIndex("year_yyyy");
-            int month_MM_ColIndex = c.getColumnIndex("month_MM");
-            int day_dd_ColIndex = c.getColumnIndex("day_dd");
-            int time_HHmm_ColIndex = c.getColumnIndex("time_HHmm");
+            int year_yyyy_s_ColIndex = c.getColumnIndex("year_yyyy_s");
+            int month_MM_s_ColIndex = c.getColumnIndex("month_MM_s");
+            int day_dd_s_ColIndex = c.getColumnIndex("day_dd_s");
+            int time_HH_s_ColIndex = c.getColumnIndex("time_HH_s");
+            int time_mm_s_ColIndex = c.getColumnIndex("time_mm_s");
             int status_ColIndex = c.getColumnIndex("status");
 
             do {
@@ -149,36 +150,36 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
             if(c.getString(status_ColIndex).equals("start"))
             {
-                Log.e(LOG_TAG,"нов="+String.valueOf(year_yyyy)+
-                        String.valueOf(month_MM)+
-                        String.valueOf(day_dd)+
-                        String.valueOf(time_HHmm));
-                Log.e(LOG_TAG,"Стар="+String.valueOf(c.getInt(year_yyyy_ColIndex))+
-                        String.valueOf(c.getInt(month_MM_ColIndex))+
-                        String.valueOf(c.getInt(day_dd_ColIndex))+
-                        String.valueOf(c.getInt(time_HHmm_ColIndex)));
+                Log.e(LOG_TAG,"Расчет = "+String.valueOf(year_yyyy*100000000 + month_MM*1000000 + day_dd*10000 + time_HH*100 + time_mm -
+                        c.getInt(year_yyyy_s_ColIndex)*100000000 -
+                        c.getInt(month_MM_s_ColIndex)*1000000 -
+                        c.getInt(day_dd_s_ColIndex)*10000 -
+                        c.getInt(time_HH_s_ColIndex)*100 -
+                        c.getInt(time_mm_s_ColIndex)));
 
-                if ( Integer.valueOf(String.valueOf(year_yyyy)+
-                                String.valueOf(month_MM)+
-                                String.valueOf(day_dd)+
-                                String.valueOf(time_HHmm))-
-                        Integer.valueOf(String.valueOf(c.getInt(year_yyyy_ColIndex))+
-                                String.valueOf(c.getInt(month_MM_ColIndex))+
-                                String.valueOf(c.getInt(day_dd_ColIndex))+
-                                String.valueOf(c.getInt(time_HHmm_ColIndex)))>5)
+                if((year_yyyy*100000000+month_MM*1000000+day_dd*10000+time_HH*100+time_mm-
+                        c.getInt(year_yyyy_s_ColIndex)*100000000-
+                        c.getInt(month_MM_s_ColIndex)*1000000-
+                        c.getInt(day_dd_s_ColIndex)*10000-
+                        c.getInt(time_HH_s_ColIndex)*100-
+                        c.getInt(time_mm_s_ColIndex))>5)
                 {
                     btnSleap.setImageResource(R.drawable.krovat2_w);
-                    Log.e(LOG_TAG, "--- Insert in Sleap: ---");
-
-                    cv.put("year_yyyy", year_yyyy);
-                    cv.put("month_MM", month_MM);
-                    cv.put("day_dd", day_dd);
-                    cv.put("time_HHmm", time_HHmm);
+                    cv.put("year_yyyy_e", year_yyyy);
+                    cv.put("month_MM_e", month_MM);
+                    cv.put("day_dd_e", day_dd);
+                    cv.put("time_HH_e", time_HH);
+                    cv.put("time_mm_e", time_mm);
                     cv.put("status", "stop");
 
                     // вставляем запись и получаем ее ID
-                    long rowID = db.insert("Sleap", null, cv);
-                    Log.e(LOG_TAG, "row inserted, ID = " + rowID);
+                    // обновляем по id
+                    Log.e(LOG_TAG, "--- Update mytable: ---");
+
+                    int updCount = db.update("Sleap", cv, "id = ?",
+                            new String[] {c.getString(idColIndex)});
+                    Log.e(LOG_TAG, "updated rows count = " + updCount);
+
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Проснулась!)", Toast.LENGTH_LONG);
                     toast.show();
@@ -196,10 +197,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         // получаем значения по номерам столбцов и пишем все в лог
                         Log.e(LOG_TAG,
                                 "ID = " + c.getInt(idColIndex) +
-                                        ", year_yyyy = " + c.getInt(year_yyyy_ColIndex) +
-                                        ", month_MM = " + c.getInt(month_MM_ColIndex)+
-                                        ", day_dd = " + c.getInt(day_dd_ColIndex)+
-                                        ", time_HHmm = " + c.getInt(time_HHmm_ColIndex)+
+                                        ", year_yyyy_s = " + c.getInt(year_yyyy_s_ColIndex) +
+                                        ", month_MM_s = " + c.getInt(month_MM_s_ColIndex)+
+                                        ", day_dd_s = " + c.getInt(day_dd_s_ColIndex)+
+                                        ", time_HH_s = " + c.getInt(time_HH_s_ColIndex)+
+                                        ", time_mm_s = " + c.getInt(time_mm_s_ColIndex)+
                                         ", status = " + c.getString(status_ColIndex));
                         // переход на следующую строку
                         // а если следующей нет (текущая - последняя), то false - выходим из цикла
@@ -213,10 +215,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 updateDate();
 //                Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
 
-                cv.put("year_yyyy", year_yyyy);
-                cv.put("month_MM", month_MM);
-                cv.put("day_dd", day_dd);
-                cv.put("time_HHmm", time_HHmm);
+                cv.put("year_yyyy_s", year_yyyy);
+                cv.put("month_MM_s", month_MM);
+                cv.put("day_dd_s", day_dd);
+                cv.put("time_HH_s", time_HH);
+                cv.put("time_mm_s", time_mm);
                 cv.put("status", "start");
 
                 // вставляем запись и получаем ее ID
@@ -233,10 +236,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             updateDate();
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
 
-            cv.put("year_yyyy", year_yyyy);
-            cv.put("month_MM", month_MM);
-            cv.put("day_dd", day_dd);
-            cv.put("time_HHmm", time_HHmm);
+            cv.put("year_yyyy_s", year_yyyy);
+            cv.put("month_MM_s", month_MM);
+            cv.put("day_dd_s", day_dd);
+            cv.put("time_HH_s", time_HH);
+            cv.put("time_mm_s", time_mm);
             cv.put("status", "start");
 
             // вставляем запись и получаем ее ID
@@ -291,8 +295,26 @@ public class MainActivity extends Activity implements View.OnClickListener {
             updateDate();
             do {
                 if((month_MM ==c.getInt(month_MM_s_ColIndex))&&(day_dd==c.getInt(day_dd_s_ColIndex)))
-                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,"Cпит","0:55",c.getString(time_HH_s_ColIndex)
-                            +":"+c.getString(time_mm_s_ColIndex),c.getString(time_mm_s_ColIndex),R.drawable.status_stop));
+                    if (c.getString(status_ColIndex).equals("start"))
+                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
+                            "Cпит",
+                            String.valueOf(time_HH - Integer.valueOf(c.getString(time_HH_s_ColIndex)))+":"+
+                            String.valueOf(time_mm - Integer.valueOf(c.getString(time_mm_s_ColIndex))),
+                            c.getString(time_HH_s_ColIndex)+":"+
+                            c.getString(time_mm_s_ColIndex),
+                            " - : - ",
+                            R.drawable.status_start));
+                    else eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
+                            "Спала",
+                            String.valueOf(Integer.valueOf(c.getString(time_HH_e_ColIndex)) -
+                                    Integer.valueOf(c.getString(time_HH_s_ColIndex)))+":"+
+                                    String.valueOf(Integer.valueOf(c.getString(time_mm_e_ColIndex)) -
+                                    Integer.valueOf(c.getString(time_mm_s_ColIndex))),
+                            c.getString(time_HH_s_ColIndex)+":"+
+                                    c.getString(time_mm_s_ColIndex),
+                            c.getString(time_HH_e_ColIndex)+":"+
+                                    c.getString(time_mm_e_ColIndex),
+                            R.drawable.status_stop));
             } while (c.moveToNext());
 
             c.moveToLast();
