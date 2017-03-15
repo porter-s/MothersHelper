@@ -28,20 +28,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     DBHelper dbHelper;
 
+    long unixSeconds = System.currentTimeMillis() / 1000L; // секунды
+    Date date = new Date(unixSeconds*1000L); // *1000 получаем миллисекунды
+
     SimpleDateFormat sdf_yyyy = new SimpleDateFormat("yyyy");
-    int year_yyyy = Integer.valueOf(sdf_yyyy.format(new Date()));
+    int year_yyyy = Integer.valueOf(sdf_yyyy.format(date));
 
     SimpleDateFormat sdf_MM = new SimpleDateFormat("MM");
-    int month_MM = Integer.valueOf(sdf_MM.format(new Date()));
+    int month_MM = Integer.valueOf(sdf_MM.format(date));
 
     SimpleDateFormat sdf_dd = new SimpleDateFormat("dd");
-    int day_dd = Integer.valueOf(sdf_dd.format(new Date()));
+    int day_dd = Integer.valueOf(sdf_dd.format(date));
 
     SimpleDateFormat sdf_HH = new SimpleDateFormat("HH");
-    int time_HH = Integer.valueOf(sdf_HH.format(new Date()));
+    int time_HH = Integer.valueOf(sdf_HH.format(date));
 
     SimpleDateFormat sdf_mm = new SimpleDateFormat("mm");
-    int time_mm = Integer.valueOf(sdf_mm.format(new Date()));
+    int time_mm = Integer.valueOf(sdf_mm.format(date));
 
     ArrayList<LVEvent> eventArrayList = new ArrayList<LVEvent>();
     LVEventAdapter lvEventAdapter;
@@ -82,13 +85,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         listOfEvents.setAdapter(lvEventAdapter);
 
         //long unixTime = System.currentTimeMillis() / 1000L;
-        long unixSeconds = System.currentTimeMillis() / 1000L; // секунды
-        Date date = new Date(unixSeconds*1000L); // *1000 получаем миллисекунды
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // какой формат нужен, выбераем
-        String formattedDate = sdf.format(date);
-        //System.out.println(formattedDate);
 
-        Log.e(LOG_TAG, String.valueOf(unixSeconds) + " convert "+formattedDate);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -135,11 +132,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             // определяем номера столбцов по имени в выборке
             int idColIndex = c.getColumnIndex("id");
-            int year_yyyy_s_ColIndex = c.getColumnIndex("year_yyyy_s");
-            int month_MM_s_ColIndex = c.getColumnIndex("month_MM_s");
-            int day_dd_s_ColIndex = c.getColumnIndex("day_dd_s");
-            int time_HH_s_ColIndex = c.getColumnIndex("time_HH_s");
-            int time_mm_s_ColIndex = c.getColumnIndex("time_mm_s");
+            int time_s = c.getColumnIndex("time_s");
+            int time_e = c.getColumnIndex("time_e");
             int status_ColIndex = c.getColumnIndex("status");
 
             do {
@@ -159,26 +153,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
             if(c.getString(status_ColIndex).equals("start"))
             {
-                Log.e(LOG_TAG,"Расчет = "+String.valueOf(year_yyyy*100000000 + month_MM*1000000 + day_dd*10000 + time_HH*100 + time_mm -
-                        c.getInt(year_yyyy_s_ColIndex)*100000000 -
-                        c.getInt(month_MM_s_ColIndex)*1000000 -
-                        c.getInt(day_dd_s_ColIndex)*10000 -
-                        c.getInt(time_HH_s_ColIndex)*100 -
-                        c.getInt(time_mm_s_ColIndex)));
+                Log.e(LOG_TAG,"Расчет = "+String.valueOf(unixSeconds - c.getLong(time_s)));
 
-                if((year_yyyy*100000000+month_MM*1000000+day_dd*10000+time_HH*100+time_mm-
-                        c.getInt(year_yyyy_s_ColIndex)*100000000-
-                        c.getInt(month_MM_s_ColIndex)*1000000-
-                        c.getInt(day_dd_s_ColIndex)*10000-
-                        c.getInt(time_HH_s_ColIndex)*100-
-                        c.getInt(time_mm_s_ColIndex))>5)
+                if(unixSeconds - c.getLong(time_s)>300)
                 {
                     btnSleap.setImageResource(R.drawable.krovat2_w);
-                    cv.put("year_yyyy_e", year_yyyy);
-                    cv.put("month_MM_e", month_MM);
-                    cv.put("day_dd_e", day_dd);
-                    cv.put("time_HH_e", time_HH);
-                    cv.put("time_mm_e", time_mm);
+                    cv.put("time_e", unixSeconds);
                     cv.put("status", "stop");
 
                     // вставляем запись и получаем ее ID
@@ -206,11 +186,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         // получаем значения по номерам столбцов и пишем все в лог
                         Log.e(LOG_TAG,
                                 "ID = " + c.getInt(idColIndex) +
-                                        ", year_yyyy_s = " + c.getInt(year_yyyy_s_ColIndex) +
-                                        ", month_MM_s = " + c.getInt(month_MM_s_ColIndex)+
-                                        ", day_dd_s = " + c.getInt(day_dd_s_ColIndex)+
-                                        ", time_HH_s = " + c.getInt(time_HH_s_ColIndex)+
-                                        ", time_mm_s = " + c.getInt(time_mm_s_ColIndex)+
+                                        ", time_s = " + c.getLong(time_s) +
                                         ", status = " + c.getString(status_ColIndex));
                         // переход на следующую строку
                         // а если следующей нет (текущая - последняя), то false - выходим из цикла
@@ -224,11 +200,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 updateDate();
 //                Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
 
-                cv.put("year_yyyy_s", year_yyyy);
-                cv.put("month_MM_s", month_MM);
-                cv.put("day_dd_s", day_dd);
-                cv.put("time_HH_s", time_HH);
-                cv.put("time_mm_s", time_mm);
+                cv.put("time_s", unixSeconds);
                 cv.put("status", "start");
 
                 // вставляем запись и получаем ее ID
@@ -245,11 +217,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             updateDate();
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
 
-            cv.put("year_yyyy_s", year_yyyy);
-            cv.put("month_MM_s", month_MM);
-            cv.put("day_dd_s", day_dd);
-            cv.put("time_HH_s", time_HH);
-            cv.put("time_mm_s", time_mm);
+            cv.put("time_s", unixSeconds);
             cv.put("status", "start");
 
             // вставляем запись и получаем ее ID
@@ -266,11 +234,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     public void updateDate()    //обновляем дату(и время)
     {
-        year_yyyy = Integer.valueOf(sdf_yyyy.format(new Date()));
-        month_MM = Integer.valueOf(sdf_MM.format(new Date()));
-        day_dd = Integer.valueOf(sdf_dd.format(new Date()));
-        time_HH = Integer.valueOf(sdf_HH.format(new Date()));
-        time_mm = Integer.valueOf(sdf_mm.format(new Date()));
+        unixSeconds = System.currentTimeMillis() / 1000L; // секунды
+        date = new Date(unixSeconds*1000L); // *1000 получаем миллисекунды
+
+        year_yyyy = Integer.valueOf(sdf_yyyy.format(date));
+        month_MM = Integer.valueOf(sdf_MM.format(date));
+        day_dd = Integer.valueOf(sdf_dd.format(date));
+        time_HH = Integer.valueOf(sdf_HH.format(date));
+        time_mm = Integer.valueOf(sdf_mm.format(date));
     }
 
     public void initData()    //обновляем данные
@@ -290,39 +261,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             // определяем номера столбцов по имени в выборке
             int idColIndex = c.getColumnIndex("id");
-            int year_yyyy_s_ColIndex = c.getColumnIndex("year_yyyy_s");
-            int month_MM_s_ColIndex = c.getColumnIndex("month_MM_s");
-            int day_dd_s_ColIndex = c.getColumnIndex("day_dd_s");
-            int time_HH_s_ColIndex = c.getColumnIndex("time_HH_s");
-            int time_mm_s_ColIndex = c.getColumnIndex("time_mm_s");
-            int year_yyyy_e_ColIndex = c.getColumnIndex("year_yyyy_e");
-            int month_MM_e_ColIndex = c.getColumnIndex("month_MM_e");
-            int day_dd_e_ColIndex = c.getColumnIndex("day_dd_e");
-            int time_HH_e_ColIndex = c.getColumnIndex("time_HH_e");
-            int time_mm_e_ColIndex = c.getColumnIndex("time_mm_e");
+            int time_s = c.getColumnIndex("time_s");
+            int time_e = c.getColumnIndex("time_e");
             int status_ColIndex = c.getColumnIndex("status");
             updateDate();
             do {
-                if((month_MM ==c.getInt(month_MM_s_ColIndex))&&(day_dd==c.getInt(day_dd_s_ColIndex)))
+                //if((month_MM ==c.getInt(month_MM_s_ColIndex))&&(day_dd==c.getInt(day_dd_s_ColIndex)))
                     if (c.getString(status_ColIndex).equals("start"))
                     eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
                             "Cпит",
-                            String.valueOf(time_HH - Integer.valueOf(c.getString(time_HH_s_ColIndex)))+":"+
-                            String.valueOf(time_mm - Integer.valueOf(c.getString(time_mm_s_ColIndex))),
-                            c.getString(time_HH_s_ColIndex)+":"+
-                            c.getString(time_mm_s_ColIndex),
+                            "00-00",
+                            String.valueOf(c.getLong(time_s)),
                             " - : - ",
                             R.drawable.status_start));
                     else eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
                             "Спала",
-                            String.valueOf(Integer.valueOf(c.getString(time_HH_e_ColIndex)) -
-                                    Integer.valueOf(c.getString(time_HH_s_ColIndex)))+":"+
-                                    String.valueOf(Integer.valueOf(c.getString(time_mm_e_ColIndex)) -
-                                    Integer.valueOf(c.getString(time_mm_s_ColIndex))),
-                            c.getString(time_HH_s_ColIndex)+":"+
-                                    c.getString(time_mm_s_ColIndex),
-                            c.getString(time_HH_e_ColIndex)+":"+
-                                    c.getString(time_mm_e_ColIndex),
+                            "00-00",
+                            String.valueOf(c.getLong(time_s)),
+                            String.valueOf(c.getLong(time_e)),
                             R.drawable.status_stop));
             } while (c.moveToNext());
 
