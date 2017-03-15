@@ -45,6 +45,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     ArrayList<LVEvent> eventArrayList = new ArrayList<LVEvent>();
     LVEventAdapter lvEventAdapter;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -80,6 +81,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ListView listOfEvents = (ListView) findViewById(R.id.listOfEvents);
         listOfEvents.setAdapter(lvEventAdapter);
 
+        //long unixTime = System.currentTimeMillis() / 1000L;
+        long unixSeconds = System.currentTimeMillis() / 1000L; // секунды
+        Date date = new Date(unixSeconds*1000L); // *1000 получаем миллисекунды
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z"); // какой формат нужен, выбераем
+        String formattedDate = sdf.format(date);
+        //System.out.println(formattedDate);
+
+        Log.e(LOG_TAG, String.valueOf(unixSeconds) + " convert "+formattedDate);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
