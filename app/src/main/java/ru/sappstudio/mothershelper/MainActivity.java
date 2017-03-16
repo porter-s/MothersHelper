@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,13 +11,15 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
-//import com.google.android.gms.appindexing.Action;
-//import com.google.android.gms.appindexing.AppIndex;
-//import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -49,6 +50,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     ArrayList<LVEvent> eventArrayList = new ArrayList<LVEvent>();
     LVEventAdapter lvEventAdapter;
 
+    private Timer timer = new Timer();;
+    private TimerListUpdate timerListUpdate = new TimerListUpdate();
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -84,6 +87,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ListView listOfEvents = (ListView) findViewById(R.id.listOfEvents);
         listOfEvents.setAdapter(lvEventAdapter);
 
+        timer.scheduleAtFixedRate(timerListUpdate,0,10000);
         //long unixTime = System.currentTimeMillis() / 1000L;
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -267,19 +271,60 @@ public class MainActivity extends Activity implements View.OnClickListener {
             updateDate();
             do {
                 //if((month_MM ==c.getInt(month_MM_s_ColIndex))&&(day_dd==c.getInt(day_dd_s_ColIndex)))
-                    if (c.getString(status_ColIndex).equals("start"))
-                    eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
-                            "Cпит",
-                            "00-00",
-                            String.valueOf(c.getLong(time_s)),
-                            " - : - ",
-                            R.drawable.status_start));
-                    else eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
-                            "Спала",
-                            "00-00",
-                            String.valueOf(c.getLong(time_s)),
-                            String.valueOf(c.getLong(time_e)),
-                            R.drawable.status_stop));
+                    if (c.getString(status_ColIndex).equals("start")){
+
+                        long kol = differenceUnixSeconds(unixSeconds,c.getLong(time_s));
+
+                        String _yyyy,_MM,_dd,_HH,_mm;
+
+                        if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
+                        else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
+                            else _yyyy = getTimeFormat(kol,"yyyy") + " л. ";
+
+                        if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
+                            else _MM = getTimeFormat(kol,"MM") + " м. ";
+
+                        if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
+                            else _dd = getTimeFormat(kol,"dd") + " д. ";
+
+                        if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
+                            else _HH = getTimeFormat(kol,"HH") + " ч. ";
+
+                        _mm = getTimeFormat(kol,"mm")+" м.";
+                        eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
+                                "Cпит",
+                               _yyyy+_MM+_dd+_HH+_mm,
+                                getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
+                                " - : - ",
+                                R.drawable.status_start));
+                    }
+                    else{
+                        long kol = differenceUnixSeconds(c.getLong(time_e),c.getLong(time_s));
+
+                        String _yyyy,_MM,_dd,_HH,_mm;
+
+                        if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
+                        else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
+                        else _yyyy = getTimeFormat(kol,"yyyy") + " л. ";
+
+                        if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
+                        else _MM = getTimeFormat(kol,"MM") + " м. ";
+
+                        if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
+                        else _dd = getTimeFormat(kol,"dd") + " д. ";
+
+                        if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
+                        else _HH = getTimeFormat(kol,"HH") + " ч. ";
+
+                        _mm = getTimeFormat(kol,"mm")+" м.";
+
+                        eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
+                                "Спала",
+                                _yyyy+_MM+_dd+_HH+_mm,
+                                getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
+                                getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
+                                R.drawable.status_stop));
+                    }
             } while (c.moveToNext());
 
             c.moveToLast();
@@ -295,108 +340,58 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     }
 
+    String getTimeFormat(long _unixSeconds, String _format){
 
+        Date _date = new Date(_unixSeconds*1000L);
+        if(_format.equals("yyyy"))
+            if(_unixSeconds<=31536000) return "0000";
+            else return sdf_yyyy.format(_date);
+
+        if(_format.equals("MM"))
+            if(_unixSeconds<=2628002) return "00";
+            else return sdf_MM.format(_date);
+
+        if(_format.equals("dd"))
+            if(_unixSeconds<=86400) return "00";
+            else return sdf_dd.format(_date);
+
+        if(_format.equals("HH"))
+            if(_unixSeconds<=3600) return "00";
+            else if(_unixSeconds<86400) return String.valueOf(_unixSeconds/3600);
+                        else return sdf_HH.format(_date);
+
+        if(_format.equals("mm"))
+            return sdf_mm.format(_date);
+
+        return null;
+    }
+
+    long differenceUnixSeconds(long _a,long _b)
+    {
+        return _a-_b;
+    }
     @Override
     public void onStart() {
         super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        client.connect();
-//        Action viewAction = Action.newAction(
-//                Action.TYPE_VIEW, // TODO: choose an action type.
-//                "Main Page", // TODO: Define a title for the content shown.
-//                // TODO: If you have web page content that matches this app activity's content,
-//                // make sure this auto-generated web page URL is correct.
-//                // Otherwise, set the URL to null.
-//                Uri.parse("http://host/path"),
-//                // TODO: Make sure this auto-generated app deep link URI is correct.
-//                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
-//        );
-//        AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-//        Action viewAction = Action.newAction(
-//                Action.TYPE_VIEW, // TODO: choose an action type.
-//                "Main Page", // TODO: Define a title for the content shown.
-//                // TODO: If you have web page content that matches this app activity's content,
-//                // make sure this auto-generated web page URL is correct.
-//                // Otherwise, set the URL to null.
-//                Uri.parse("http://host/path"),
-//                // TODO: Make sure this auto-generated app deep link URI is correct.
-//                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
-//        );
-//        AppIndex.AppIndexApi.end(client, viewAction);
-//        client.disconnect();
     }
+    class TimerListUpdate extends TimerTask{
 
-//
-//    @Override
-//    public void onClick(View v) {
-//
-//        // создаем объект для данных
-//        ContentValues cv = new ContentValues();
-//
-//        // получаем данные из полей ввода
-////        String name = etName.getText().toString();
-////        String email = etEmail.getText().toString();
-//
-//        // подключаемся к БД
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//
-//        switch (v.getId()) {
-//            case R.id.btnAdd:
-//                Log.d(LOG_TAG, "--- Insert in mytable: ---");
-//                // подготовим данные для вставки в виде пар: наименование столбца - значение
-//
-//                cv.put("name", name);
-//                cv.put("email", email);
-//                // вставляем запись и получаем ее ID
-//                long rowID = db.insert("mytable", null, cv);
-//                Log.d(LOG_TAG, "row inserted, ID = " + rowID);
-//                break;
-//            case R.id.btnRead:
-//                Log.d(LOG_TAG, "--- Rows in mytable: ---");
-//                // делаем запрос всех данных из таблицы mytable, получаем Cursor
-//                Cursor c = db.query("mytable", null, null, null, null, null, null);
-//
-//                // ставим позицию курсора на первую строку выборки
-//                // если в выборке нет строк, вернется false
-//                if (c.moveToFirst()) {
-//
-//                    // определяем номера столбцов по имени в выборке
-//                    int idColIndex = c.getColumnIndex("id");
-//                    int nameColIndex = c.getColumnIndex("name");
-//                    int emailColIndex = c.getColumnIndex("email");
-//
-//                    do {
-//                        // получаем значения по номерам столбцов и пишем все в лог
-//                        Log.d(LOG_TAG,
-//                                "ID = " + c.getInt(idColIndex) +
-//                                        ", name = " + c.getString(nameColIndex) +
-//                                        ", email = " + c.getString(emailColIndex));
-//                        // переход на следующую строку
-//                        // а если следующей нет (текущая - последняя), то false - выходим из цикла
-//                    } while (c.moveToNext());
-//                } else
-//                    Log.d(LOG_TAG, "0 rows");
-//                c.close();
-//                break;
-//            case R.id.btnClear:
-//                Log.d(LOG_TAG, "--- Clear mytable: ---");
-//                // удаляем все записи
-//                int clearCount = db.delete("mytable", null, null);
-//                Log.d(LOG_TAG, "deleted rows count = " + clearCount);
-//                break;
-//        }
-//        // закрываем подключение к БД
-//        dbHelper.close();
-//    }
+        @Override
+        public void run() {
+            Log.e(LOG_TAG,"TimerRun");
+
+            runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                   initData();
+                   lvEventAdapter.notifyDataSetChanged();
+               }
+            });
+        }
+    }
 }
