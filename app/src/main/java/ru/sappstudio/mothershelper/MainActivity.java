@@ -279,19 +279,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                         if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
                         else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-                            else _yyyy = getTimeFormat(kol,"yyyy") + " л. ";
+                            else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
 
                         if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-                            else _MM = getTimeFormat(kol,"MM") + " м. ";
+                            else _MM = getTimeFormat(kol,"MM") + " мес ";
 
                         if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-                            else _dd = getTimeFormat(kol,"dd") + " д. ";
+                            else _dd = getTimeFormat(kol,"dd") + " д ";
 
                         if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-                            else _HH = getTimeFormat(kol,"HH") + " ч. ";
+                            else _HH = getTimeFormat(kol,"HH") + " ч ";
 
-                        _mm = getTimeFormat(kol,"mm")+" м.";
-                        eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
+                        _mm = getTimeFormat(kol,"mm")+" мин";
+                        eventArrayList.add(new LVEvent(R.drawable.krovat2_w,
                                 "Cпит",
                                _yyyy+_MM+_dd+_HH+_mm,
                                 getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
@@ -305,20 +305,20 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                         if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
                         else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-                        else _yyyy = getTimeFormat(kol,"yyyy") + " л. ";
+                        else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
 
                         if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-                        else _MM = getTimeFormat(kol,"MM") + " м. ";
+                        else _MM = getTimeFormat(kol,"MM") + " мес ";
 
                         if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-                        else _dd = getTimeFormat(kol,"dd") + " д. ";
+                        else _dd = getTimeFormat(kol,"dd") + " д ";
 
                         if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-                        else _HH = getTimeFormat(kol,"HH") + " ч. ";
+                        else _HH = getTimeFormat(kol,"HH") + " ч ";
 
-                        _mm = getTimeFormat(kol,"mm")+" м.";
+                        _mm = getTimeFormat(kol,"mm")+" мин";
 
-                        eventArrayList.add(new LVEvent(R.drawable.krovat2_b,
+                        eventArrayList.add(new LVEvent(R.drawable.krovat2_w,
                                 "Спала",
                                 _yyyy+_MM+_dd+_HH+_mm,
                                 getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),

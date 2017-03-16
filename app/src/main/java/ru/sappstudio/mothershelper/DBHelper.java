@@ -19,16 +19,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(LOG_TAG, "--- onCreate database ---");
+        Log.e(LOG_TAG, "--- onCreate database ---");
         // создаем таблицу с полями
         db.execSQL("create table Sleap ("
-                + "id integer primary key autoincrement,"
-                + "time_s bigint," + "time_e bigint,"
-                +"status string"+");");
+                + " id integer primary key autoincrement , "
+                + "time_s bigint , " + "time_e bigint , "
+                +" status string "+");");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        //проверяете какая версия сейчас и делаете апдейт
+        db.execSQL("DROP TABLE IF EXISTS Sleap");
+        onCreate(db);
     }
 }
