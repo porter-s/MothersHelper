@@ -338,7 +338,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         c.close();
 
-    }
+    } //fdzg
 
     String getTimeFormat(long _unixSeconds, String _format){
 
