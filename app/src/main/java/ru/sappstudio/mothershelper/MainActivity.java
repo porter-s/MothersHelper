@@ -87,6 +87,24 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ListView listOfEvents = (ListView) findViewById(R.id.listOfEvents);
         listOfEvents.setAdapter(lvEventAdapter);
 
+//        listOfEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            public void onItemClick(AdapterView<?> parent, View view,
+//                                    int position, long id) {
+//                Log.d(LOG_TAG, "itemClick: position = " + position + ", id = " + id);
+//            }
+//        });
+//
+//        listOfEvents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            public void onItemSelected(AdapterView<?> parent, View view,
+//                                       int position, long id) {
+//                Log.d(LOG_TAG, "itemSelect: position = " + position + ", id = "+ id);
+//            }
+//
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                Log.d(LOG_TAG, "itemSelect: nothing");
+//            }
+//        });
+
         timer.scheduleAtFixedRate(timerListUpdate,0,10000);
         //long unixTime = System.currentTimeMillis() / 1000L;
 
@@ -267,6 +285,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             int idColIndex = c.getColumnIndex("id");
             int time_s = c.getColumnIndex("time_s");
             int time_e = c.getColumnIndex("time_e");
+            int mess = c.getColumnIndex("mess");
             int status_ColIndex = c.getColumnIndex("status");
             updateDate();
             do {
@@ -291,11 +310,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                             else _HH = getTimeFormat(kol,"HH") + " ч ";
 
                         _mm = getTimeFormat(kol,"mm")+" мин";
-                        eventArrayList.add(new LVEvent(R.drawable.krovat2_w,
+                        eventArrayList.add(new LVEvent(R.drawable.krovat2_lv,R.drawable.fon_lv_sleap_on,
                                 "Cпит",
                                _yyyy+_MM+_dd+_HH+_mm,
                                 getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
                                 " - : - ",
+                                c.getString(mess),
                                 R.drawable.status_start));
                     }
                     else{
@@ -318,11 +338,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                         _mm = getTimeFormat(kol,"mm")+" мин";
 
-                        eventArrayList.add(new LVEvent(R.drawable.krovat2_w,
+                        eventArrayList.add(new LVEvent(R.drawable.krovat2_lv,R.drawable.fon_lv_sleap_off,
                                 "Спала",
                                 _yyyy+_MM+_dd+_HH+_mm,
                                 getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
                                 getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
+                                c.getString(mess),
                                 R.drawable.status_stop));
                     }
             } while (c.moveToNext());

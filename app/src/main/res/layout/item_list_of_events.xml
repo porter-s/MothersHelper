@@ -2,14 +2,15 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="65dp"
+    android:layout_height="95dp"
     android:orientation="horizontal">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
-        android:src="@drawable/fon_lv_sleap"
+        android:id="@+id/ivLVFon"
+        android:src="@drawable/fon_lv_sleap_off"
+        android:alpha="0.7"
         android:scaleType="fitXY" />
 
     <LinearLayout
@@ -18,17 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center">
 
-        <ImageView
 
-            android:layout_weight="15"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/krovat2_w"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:id="@+id/ivEvent"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical" />
 
         <LinearLayout
             android:layout_marginLeft="5dp"
@@ -36,15 +27,26 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="top">
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <ImageView
+
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:src="@drawable/krovat2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/ivEvent"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center_vertical" />
+
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:text="Сон"
                     android:id="@+id/tvEvent"
@@ -64,7 +66,7 @@
                     android:textSize="25dp"
                     android:layout_gravity="center_horizontal"
                     android:maxLines="1"
-                    android:gravity="center_vertical|center_horizontal" />
+                    android:gravity="center_vertical" />
             </LinearLayout>
 
             <LinearLayout
@@ -73,14 +75,15 @@
                 android:layout_height="wrap_content" >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="10"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="c "
                     android:id="@+id/textView2"
                     android:textColor="#514f4f"
                     android:maxLines="1"
-                    android:textSize="12dp" />
+                    android:textSize="16dp" />
                 <TextView
                     android:layout_marginLeft="5dp"
                     android:layout_weight="40"
@@ -95,17 +98,19 @@
                     android:gravity="center_vertical" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="10"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="до "
                     android:id="@+id/textView3"
                     android:textColor="#4a4949"
                     android:maxLines="1"
-                    android:textSize="12dp" />
+                    android:textSize="16dp"
+                    android:gravity="center_vertical" />
                 <TextView
                     android:layout_marginLeft="5dp"
-                    android:layout_weight="50"
+                    android:layout_weight="40"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -116,14 +121,27 @@
                     android:textSize="16dp"
                     android:gravity="center_vertical" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Заметка"
+                android:id="@+id/tvLVMess"
+                android:textColor="#272626"
+                android:maxLines="2"
+                android:minLines="2" />
+
         </LinearLayout>
 
     </LinearLayout>
 
     <ImageView
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:src="@drawable/status_stop"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/ivStatusEvent"
         android:scaleType="fitCenter"
         android:layout_alignParentRight="true" />

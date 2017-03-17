@@ -1,6 +1,7 @@
 package ru.sappstudio.mothershelper;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ public class LVEventAdapter extends BaseAdapter{
     Context _context;
     LayoutInflater lInflater;
     ArrayList<LVEvent> objects;
+    final String LOG_TAG = "LVEventAdapter";
 
     LVEventAdapter(Context context, ArrayList<LVEvent> products) {
         _context = context;
@@ -57,12 +59,19 @@ public class LVEventAdapter extends BaseAdapter{
         // заполняем View в пункте списка данными из товаров: наименование, цена
         // и картинка
         ((ImageView) view.findViewById(R.id.ivEvent)).setImageResource(p.ivEvent);
+        ((ImageView) view.findViewById(R.id.ivLVFon)).setImageResource(p.ivLVFon);
         ((TextView) view.findViewById(R.id.tvEvent)).setText(p.tvEvent);
         ((TextView) view.findViewById(R.id.tvTimeEvent)).setText(p.tvTimeEvent);
         ((TextView) view.findViewById(R.id.tvStartEvent)).setText(p.tvStarEvent);
         ((TextView) view.findViewById(R.id.tvStopEvent)).setText(p.tvStopEvent);
         ((ImageView) view.findViewById(R.id.ivStatusEvent)).setImageResource(p.ivStatusEvent);
 
+        ((ImageView) view.findViewById(R.id.ivEvent)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(LOG_TAG,"OnClick");
+            }
+        });
         return view;
     }
 
