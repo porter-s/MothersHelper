@@ -77,8 +77,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // создаем объект для создания и управления версиями БД
         dbHelper = new DBHelper(this);
-
-
+        //SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //dbHelper.onUpgrade(db,1,1);
+        //db.close();
         // создаем адаптер
         lvEventAdapter = new LVEventAdapter(this, eventArrayList);
         initData();
@@ -409,8 +410,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
             runOnUiThread(new Runnable() {
                @Override
                public void run() {
-                   initData();
-                   lvEventAdapter.notifyDataSetChanged();
+                   if((unixSeconds - System.currentTimeMillis() / 1000L)>=60)
+                   {
+                       initData();
+                       lvEventAdapter.notifyDataSetChanged();
+                   }else unixSeconds = System.currentTimeMillis() / 1000L;
                }
             });
         }

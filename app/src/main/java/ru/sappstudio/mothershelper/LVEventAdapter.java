@@ -1,6 +1,8 @@
 package ru.sappstudio.mothershelper;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +71,8 @@ public class LVEventAdapter extends BaseAdapter{
         ((ImageView) view.findViewById(R.id.ivEvent)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(LOG_TAG,"OnClick");
+                Log.e(LOG_TAG, "OnClick");
+                ((Activity) _context).startActivity(new Intent((((Activity) _context)), MessActivity.class));
             }
         });
         return view;
