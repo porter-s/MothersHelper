@@ -88,24 +88,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ListView listOfEvents = (ListView) findViewById(R.id.listOfEvents);
         listOfEvents.setAdapter(lvEventAdapter);
 
-//        listOfEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                Log.d(LOG_TAG, "itemClick: position = " + position + ", id = " + id);
-//            }
-//        });
-//
-//        listOfEvents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            public void onItemSelected(AdapterView<?> parent, View view,
-//                                       int position, long id) {
-//                Log.d(LOG_TAG, "itemSelect: position = " + position + ", id = "+ id);
-//            }
-//
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                Log.d(LOG_TAG, "itemSelect: nothing");
-//            }
-//        });
-
         timer.scheduleAtFixedRate(timerListUpdate,0,10000);
         //long unixTime = System.currentTimeMillis() / 1000L;
 
@@ -159,7 +141,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             int time_e = c.getColumnIndex("time_e");
             int status_ColIndex = c.getColumnIndex("status");
 
-            do {
+//            do {
                 // получаем значения по номерам столбцов и пишем все в лог
 //                Log.e(LOG_TAG,
 //                        "ID = " + c.getInt(idColIndex) +
@@ -170,7 +152,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //                                ", status = " + c.getString(status_ColIndex));
                 // переход на следующую строку
                 // а если следующей нет (текущая - последняя), то false - выходим из цикла
-            } while (c.moveToNext());
+//            } while (c.moveToNext());
             c.moveToLast();
             updateDate();
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
@@ -275,6 +257,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         //dbHelper.onCreate(db);
 
+        //загружаем Sleap//
+
         // делаем запрос всех данных из таблицы sleap, получаем Cursor
         Cursor c = db.query("Sleap", null, null, null, null, null, null);
         eventArrayList.clear();
@@ -289,65 +273,74 @@ public class MainActivity extends Activity implements View.OnClickListener {
             int mess = c.getColumnIndex("mess");
             int status_ColIndex = c.getColumnIndex("status");
             updateDate();
-            do {
-                //if((month_MM ==c.getInt(month_MM_s_ColIndex))&&(day_dd==c.getInt(day_dd_s_ColIndex)))
-                    if (c.getString(status_ColIndex).equals("start")){
+           // do {
 
-                        long kol = differenceUnixSeconds(unixSeconds,c.getLong(time_s));
+          //  } while (c.moveToNext());
+            c.moveToLast();
+            //---------------Записываем последнюю запись-------------
+            if (c.getString(status_ColIndex).equals("start")){
 
-                        String _yyyy,_MM,_dd,_HH,_mm;
+                long kol = differenceUnixSeconds(unixSeconds,c.getLong(time_s));
 
-                        if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
-                        else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-                            else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
+                String _yyyy,_MM,_dd,_HH,_mm;
 
-                        if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-                            else _MM = getTimeFormat(kol,"MM") + " мес ";
+                if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
+                else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
+                else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
 
-                        if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-                            else _dd = getTimeFormat(kol,"dd") + " д ";
+                if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
+                else _MM = getTimeFormat(kol,"MM") + " мес ";
 
-                        if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-                            else _HH = getTimeFormat(kol,"HH") + " ч ";
+                if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
+                else _dd = getTimeFormat(kol,"dd") + " д ";
 
-                        _mm = getTimeFormat(kol,"mm")+" мин";
-                        eventArrayList.add(new LVEvent(R.drawable.krovat2_lv,R.drawable.fon_lv_sleap_on,
-                                "Cпит",
-                               _yyyy+_MM+_dd+_HH+_mm,
-                                getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
-                                " - : - ",
-                                c.getString(mess),
-                                R.drawable.status_start));
-                    }
-                    else{
-                        long kol = differenceUnixSeconds(c.getLong(time_e),c.getLong(time_s));
+                if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
+                else _HH = getTimeFormat(kol,"HH") + " ч ";
 
-                        String _yyyy,_MM,_dd,_HH,_mm;
+                _mm = getTimeFormat(kol,"mm")+" мин";
+                eventArrayList.add(new LVEvent("Sleap",
+                        R.drawable.krovat2_lv, R.drawable.fon_lv_sleap_on,
+                        c.getString(idColIndex),
+                        c.getLong(time_s),c.getLong(time_e),
+                        "Cпит",
+                        _yyyy+_MM+_dd+_HH+_mm,
+                        getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
+                        " - : - ",
+                        c.getString(mess),
+                        R.drawable.status_start));
+            }
+            else{
+                long kol = differenceUnixSeconds(c.getLong(time_e),c.getLong(time_s));
 
-                        if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
-                        else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-                        else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
+                String _yyyy,_MM,_dd,_HH,_mm;
 
-                        if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-                        else _MM = getTimeFormat(kol,"MM") + " мес ";
+                if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
+                else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
+                else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
 
-                        if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-                        else _dd = getTimeFormat(kol,"dd") + " д ";
+                if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
+                else _MM = getTimeFormat(kol,"MM") + " мес ";
 
-                        if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-                        else _HH = getTimeFormat(kol,"HH") + " ч ";
+                if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
+                else _dd = getTimeFormat(kol,"dd") + " д ";
 
-                        _mm = getTimeFormat(kol,"mm")+" мин";
+                if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
+                else _HH = getTimeFormat(kol,"HH") + " ч ";
 
-                        eventArrayList.add(new LVEvent(R.drawable.krovat2_lv,R.drawable.fon_lv_sleap_off,
-                                "Спала",
-                                _yyyy+_MM+_dd+_HH+_mm,
-                                getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
-                                getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
-                                c.getString(mess),
-                                R.drawable.status_stop));
-                    }
-            } while (c.moveToNext());
+                _mm = getTimeFormat(kol,"mm")+" мин";
+
+                eventArrayList.add(new LVEvent("Sleap",
+                        R.drawable.krovat2_lv, R.drawable.fon_lv_sleap_off,
+                        c.getString(idColIndex),
+                        c.getLong(time_s),c.getLong(time_e),
+                        "Спала",
+                        _yyyy+_MM+_dd+_HH+_mm,
+                        getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
+                        getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
+                        c.getString(mess),
+                        R.drawable.status_stop));
+            }
+            //---------------------------------------------------------------
 
             c.moveToLast();
             Log.e(LOG_TAG, "Sleap status = " + c.getString(status_ColIndex));
@@ -395,6 +388,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public void onStart() {
         super.onStart();
+        initData();
+        lvEventAdapter.notifyDataSetChanged();
+
     }
 
     @Override

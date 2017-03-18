@@ -56,7 +56,7 @@ public class LVEventAdapter extends BaseAdapter{
             view = lInflater.inflate(R.layout.item_list_of_events, parent, false);
         }
 
-        LVEvent p = getEvent(position);
+        final LVEvent p = getEvent(position);
 
         // заполняем View в пункте списка данными из товаров: наименование, цена
         // и картинка
@@ -66,13 +66,23 @@ public class LVEventAdapter extends BaseAdapter{
         ((TextView) view.findViewById(R.id.tvTimeEvent)).setText(p.tvTimeEvent);
         ((TextView) view.findViewById(R.id.tvStartEvent)).setText(p.tvStarEvent);
         ((TextView) view.findViewById(R.id.tvStopEvent)).setText(p.tvStopEvent);
+        ((TextView) view.findViewById(R.id.tvLVMess)).setText(p.tvLVMess);
         ((ImageView) view.findViewById(R.id.ivStatusEvent)).setImageResource(p.ivStatusEvent);
 
-        ((ImageView) view.findViewById(R.id.ivEvent)).setOnClickListener(new View.OnClickListener() {
+        ((TextView) view.findViewById(R.id.tvLVMess)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e(LOG_TAG, "OnClick");
-                ((Activity) _context).startActivity(new Intent((((Activity) _context)), MessActivity.class));
+                Intent intent = new Intent((((Activity) _context)), MessActivity.class);
+
+                intent.putExtra("_tvEvent", p.tvEvent);
+                intent.putExtra("_tableName", p.tableName);
+                intent.putExtra("_id", p.id);
+                intent.putExtra("_tvLVMess", p.tvLVMess);
+                intent.putExtra("_unixTimeSecond_s", Long.valueOf(p.unixTimeSecond_s));
+                intent.putExtra("_unixTimeSecond_e", Long.valueOf(p.unixTimeSecond_e));
+
+                ((Activity) _context).startActivity(intent);
             }
         });
         return view;

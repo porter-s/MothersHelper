@@ -23,7 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // создаем таблицу с полями
         db.execSQL("create table Sleap ("
                 + " id integer primary key autoincrement , "
-                + "time_s bigint , " + "time_e bigint , " + "mess text, "
+                + "time_s bigint , " + "time_e bigint , " + "mess string, "
                 +" status string "+");");
     }
 
