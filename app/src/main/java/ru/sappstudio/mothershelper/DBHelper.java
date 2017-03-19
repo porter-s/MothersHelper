@@ -25,6 +25,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 + " id integer primary key autoincrement , "
                 + "time_s bigint , " + "time_e bigint , " + "mess string, "
                 +" status string "+");");
+        db.execSQL("create table Food ("
+                + " id integer primary key autoincrement , "
+                + "time_s bigint , " + "time_e bigint , " + "mess string, "
+                +" status string "+");");
+        db.execSQL("create table Koliki ("
+                + " id integer primary key autoincrement , "
+                + "time bigint , " + "mess string, "
+                +" status string "+");");
+        db.execSQL("create table Walk ("
+                + " id integer primary key autoincrement , "
+                + "time_s bigint , " + "time_e bigint , " + "mess string, "
+                +" status string "+");");
     }
 
     @Override

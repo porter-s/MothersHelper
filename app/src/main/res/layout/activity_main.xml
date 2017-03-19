@@ -18,7 +18,7 @@
             android:id="@+id/listOfEvents"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="90">
+            android:layout_weight="85">
 
         </ListView>
 
@@ -26,7 +26,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10">
+            android:layout_weight="15">
 
             <ImageButton
                 android:paddingLeft="5dp"
@@ -40,8 +40,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/btnSleap"
-                android:layout_weight="20"
-                android:src="@drawable/krovat2_w"
+                android:layout_weight="25"
+                android:src="@drawable/krovat_w"
                 android:scaleType="fitCenter"
                 android:background="#d753f4" />
 
@@ -57,7 +57,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/btnFood"
-                android:layout_weight="20"
+                android:layout_weight="25"
                 android:src="@drawable/but_w"
                 android:scaleType="fitCenter"
                 android:background="#8efe59" />
@@ -73,24 +73,8 @@
                 android:layout_marginBottom="5dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:id="@+id/btnGame"
-                android:layout_weight="20"
-                android:src="@drawable/activ_w"
-                android:scaleType="fitCenter"
-                android:background="#ffee2d" />
-            <ImageButton
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
                 android:id="@+id/btnKoliki"
-                android:layout_weight="20"
+                android:layout_weight="25"
                 android:src="@drawable/koliki_w"
                 android:scaleType="fitCenter"
                 android:background="#55AAFF" />
@@ -107,8 +91,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:id="@+id/btnWalk"
-                android:layout_weight="20"
-                android:src="@drawable/kalaska_w"
+                android:layout_weight="25"
+                android:src="@drawable/kolaska_w"
                 android:scaleType="fitCenter"
                 android:background="#fa7548" />
 

@@ -38,7 +38,7 @@
 
                     android:layout_marginLeft="4dp"
                     android:layout_marginTop="2dp"
-                    android:src="@drawable/krovat2"
+                    android:src="@drawable/krovat"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:id="@+id/ivEvent"
