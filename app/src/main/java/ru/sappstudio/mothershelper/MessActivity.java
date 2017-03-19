@@ -61,6 +61,7 @@ public class MessActivity extends Activity {
 
         tvAmMess.setText(_tvLVMess);
         tvAmEvent.setText(_tvEvent);
+
         if (_tableName.equals("Food")||_tableName.equals("Koliki"))
         {
 

@@ -102,9 +102,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btnSleap:
                 clickSleap();
                 updateLV();
-                //initData("Sleap", "Спим", "Спали", btnSleap, R.drawable.krovat, R.drawable.krovat_w, R.drawable.krovat, R.drawable.fon_lv_sleap_on, R.drawable.fon_lv_sleap_off);
-                //initDataSleap();
-                //lvEventAdapter.notifyDataSetChanged();
             break;
 
             case R.id.btnFood:
@@ -120,9 +117,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btnWalk:
                 clickWalk();
                 updateLV();
-                //initData("Walk", "Гуляем", "Гуляли", btnWalk, R.drawable.kolaska, R.drawable.kolaska_w, R.drawable.kolaska, R.drawable.fon_lv_kolaska_on, R.drawable.fon_lv_kolaska_off);
-                //initDataWalk();
-                //lvEventAdapter.notifyDataSetChanged();
             break;
         }
     }
