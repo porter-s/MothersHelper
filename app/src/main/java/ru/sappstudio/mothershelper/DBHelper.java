@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 +" status string "+");");
         db.execSQL("create table Food ("
                 + " id integer primary key autoincrement , "
-                + "time_s bigint , " + "time_e bigint , " + "mess string, "
+                + "time bigint , " + "mess string, "
                 +" status string "+");");
         db.execSQL("create table Koliki ("
                 + " id integer primary key autoincrement , "

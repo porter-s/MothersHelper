@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:id="@+id/ivLVFon"
         android:src="@drawable/fon_lv_sleap_off"
-        android:alpha="0.7"
         android:scaleType="fitXY" />
 
     <LinearLayout
@@ -82,7 +81,7 @@
                     android:layout_weight="10"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="c "
-                    android:id="@+id/textView2"
+                    android:id="@+id/tvLvS"
                     android:textColor="#514f4f"
                     android:maxLines="1"
                     android:textSize="16dp" />
@@ -105,7 +104,7 @@
                     android:layout_weight="10"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="до "
-                    android:id="@+id/textView3"
+                    android:id="@+id/tvLvDo"
                     android:textColor="#4a4949"
                     android:maxLines="1"
                     android:textSize="16dp"

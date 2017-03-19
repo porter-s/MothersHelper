@@ -55,7 +55,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-   // private GoogleApiClient client;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +75,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // создаем объект для создания и управления версиями БД
         dbHelper = new DBHelper(this);
-        //SQLiteDatabase db = dbHelper.getWritableDatabase();
-        //dbHelper.onUpgrade(db,1,1);
-        //db.close();
+    //    SQLiteDatabase db = dbHelper.getWritableDatabase();
+    //    dbHelper.onUpgrade(db,1,1);
+    //    db.close();
         // создаем адаптер
         lvEventAdapter = new LVEventAdapter(this, eventArrayList);
-        initDataSleap();
-        initDataWalk();
+        updateLV();
+        //initDataSleap();
+        //initDataWalk();
 
         // настраиваем список
         ListView listOfEvents = (ListView) findViewById(R.id.listOfEvents);
@@ -101,9 +101,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btnSleap:
                 clickSleap();
-                initData("Sleap", "Спим", "Спали", btnSleap, R.drawable.krovat, R.drawable.krovat_w, R.drawable.krovat, R.drawable.fon_lv_sleap_on, R.drawable.fon_lv_sleap_off);
+                updateLV();
+                //initData("Sleap", "Спим", "Спали", btnSleap, R.drawable.krovat, R.drawable.krovat_w, R.drawable.krovat, R.drawable.fon_lv_sleap_on, R.drawable.fon_lv_sleap_off);
                 //initDataSleap();
-                lvEventAdapter.notifyDataSetChanged();
+                //lvEventAdapter.notifyDataSetChanged();
             break;
 
             case R.id.btnFood:
@@ -118,9 +119,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             case R.id.btnWalk:
                 clickWalk();
-                initData("Walk", "Гуляем", "Гуляли", btnWalk, R.drawable.kolaska, R.drawable.kolaska_w, R.drawable.kolaska, R.drawable.fon_lv_kolaska_on, R.drawable.fon_lv_kolaska_off);
+                updateLV();
+                //initData("Walk", "Гуляем", "Гуляли", btnWalk, R.drawable.kolaska, R.drawable.kolaska_w, R.drawable.kolaska, R.drawable.fon_lv_kolaska_on, R.drawable.fon_lv_kolaska_off);
                 //initDataWalk();
-                lvEventAdapter.notifyDataSetChanged();
+                //lvEventAdapter.notifyDataSetChanged();
             break;
         }
     }
@@ -731,9 +733,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     void updateLV()
     {
         eventArrayList.clear();
-        initDataSleap();
-        initDataWalk();
+        initData("Sleap", "Спим", "Спали", btnSleap, R.drawable.krovat, R.drawable.krovat_w, R.drawable.krovat, R.drawable.fon_lv_sleap_on, R.drawable.fon_lv_sleap_off);
+        initData("Walk", "Гуляем", "Гуляли", btnWalk, R.drawable.kolaska, R.drawable.kolaska_w, R.drawable.kolaska, R.drawable.fon_lv_kolaska_on, R.drawable.fon_lv_kolaska_off);
         lvEventAdapter.notifyDataSetChanged();
+
+       // initDataSleap();
+        //initDataWalk();
+       // lvEventAdapter.notifyDataSetChanged();
     }
 
     @Override

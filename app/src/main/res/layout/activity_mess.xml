@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="с"
-                android:id="@+id/textView5" />
+                android:id="@+id/tvAmS" />
 
             <TextView
                 android:layout_marginLeft="5dp"
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="до"
-                android:id="@+id/textView6" />
+                android:id="@+id/tvAmDo" />
             <TextView
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"

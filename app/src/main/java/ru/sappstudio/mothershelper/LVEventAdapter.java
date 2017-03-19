@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -69,22 +71,29 @@ public class LVEventAdapter extends BaseAdapter{
         ((TextView) view.findViewById(R.id.tvLVMess)).setText(p.tvLVMess);
         ((ImageView) view.findViewById(R.id.ivStatusEvent)).setImageResource(p.ivStatusEvent);
 
-        ((TextView) view.findViewById(R.id.tvLVMess)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(LOG_TAG, "OnClick");
-                Intent intent = new Intent((((Activity) _context)), MessActivity.class);
+        if(p.tableName.equals("Food")||p.tableName.equals("Koliki"))
+        {
+            ((TextView) view.findViewById(R.id.tvLvS)).setText("В");
+            ((TextView) view.findViewById(R.id.tvLvDo)).setText("");
+        }
 
-                intent.putExtra("_tvEvent", p.tvEvent);
-                intent.putExtra("_tableName", p.tableName);
-                intent.putExtra("_id", p.id);
-                intent.putExtra("_tvLVMess", p.tvLVMess);
-                intent.putExtra("_unixTimeSecond_s", Long.valueOf(p.unixTimeSecond_s));
-                intent.putExtra("_unixTimeSecond_e", Long.valueOf(p.unixTimeSecond_e));
 
-                ((Activity) _context).startActivity(intent);
-            }
-        });
+                ((TextView) view.findViewById(R.id.tvLVMess)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.e(LOG_TAG, "OnClick");
+                        Intent intent = new Intent((((Activity) _context)), MessActivity.class);
+
+                        intent.putExtra("_tvEvent", p.tvEvent);
+                        intent.putExtra("_tableName", p.tableName);
+                        intent.putExtra("_id", p.id);
+                        intent.putExtra("_tvLVMess", p.tvLVMess);
+                        intent.putExtra("_unixTimeSecond_s", Long.valueOf(p.unixTimeSecond_s));
+                        intent.putExtra("_unixTimeSecond_e", Long.valueOf(p.unixTimeSecond_e));
+
+                        ((Activity) _context).startActivity(intent);
+                    }
+                });
         return view;
     }
 

@@ -61,6 +61,10 @@ public class MessActivity extends Activity {
 
         tvAmMess.setText(_tvLVMess);
         tvAmEvent.setText(_tvEvent);
+        if (_tableName.equals("Food")||_tableName.equals("Koliki"))
+        {
+
+        }else
 
         if(!getTimeFormat(_unixTimeSecond_e,"yyyy").equals("0000")) {
             if (!(getTimeFormat(_unixTimeSecond_s, "yyyy").equals(getTimeFormat(_unixTimeSecond_e, "yyyy"))) ||
