@@ -73,9 +73,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         // создаем объект для создания и управления версиями БД
         dbHelper = new DBHelper(this);
-    //    SQLiteDatabase db = dbHelper.getWritableDatabase();
-    //    dbHelper.onUpgrade(db,1,1);
-    //    db.close();
+
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+       // int k = db.getVersion();
+//        dbHelper.onUpgrade(db,1,2);
+//        db.close();
+        //Cursor c = db.query("Sleap", null, null, null, null, null, null);
+//        if (!c.moveToFirst())
+//            dbHelper.onUpgrade(db,1,1);
+//        db.close();
         // создаем адаптер
         lvEventAdapter = new LVEventAdapter(this, eventArrayList);
         updateLV();
@@ -559,217 +565,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         time_mm = Integer.valueOf(sdf_mm.format(date));
     }
 
-//    public void initDataSleap()    //обновляем данные
-//    {
-//        // создаем объект для данных
-//        ContentValues cv = new ContentValues();
-//        // подключаемся к БД
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        //dbHelper.onCreate(db);
-//
-//        //загружаем Sleap//
-//
-//        // делаем запрос всех данных из таблицы sleap, получаем Cursor
-//        Cursor c = db.query("Sleap", null, null, null, null, null, null);
-//
-//        // ставим позицию курсора на первую строку выборки
-//        // если в выборке нет строк, вернется false
-//        if (c.moveToFirst()) {
-//
-//            // определяем номера столбцов по имени в выборке
-//            int idColIndex = c.getColumnIndex("id");
-//            int time_s = c.getColumnIndex("time_s");
-//            int time_e = c.getColumnIndex("time_e");
-//            int mess = c.getColumnIndex("mess");
-//            int status_ColIndex = c.getColumnIndex("status");
-//            updateDate();
-//           // do {
-//
-//          //  } while (c.moveToNext());
-//            c.moveToLast();
-//            //---------------Записываем последнюю запись-------------
-//            if (c.getString(status_ColIndex).equals("start")){
-//
-//                long kol = differenceUnixSeconds(unixSeconds,c.getLong(time_s));
-//
-//                String _yyyy,_MM,_dd,_HH,_mm;
-//
-//                if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
-//                else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-//                else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
-//
-//                if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-//                else _MM = getTimeFormat(kol,"MM") + " мес ";
-//
-//                if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-//                else _dd = getTimeFormat(kol,"dd") + " д ";
-//
-//                if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-//                else _HH = getTimeFormat(kol,"HH") + " ч ";
-//
-//                _mm = getTimeFormat(kol,"mm")+" мин";
-//                eventArrayList.add(new LVEvent("Sleap",
-//                        R.drawable.krovat_lv, R.drawable.fon_lv_sleap_on,
-//                        c.getString(idColIndex),
-//                        c.getLong(time_s),c.getLong(time_e),
-//                        "Cпит",
-//                        _yyyy+_MM+_dd+_HH+_mm,
-//                        getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
-//                        " - : - ",
-//                        c.getString(mess),
-//                        R.drawable.status_start));
-//            }
-//            else{
-//                long kol = differenceUnixSeconds(c.getLong(time_e),c.getLong(time_s));
-//
-//                String _yyyy,_MM,_dd,_HH,_mm;
-//
-//                if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
-//                else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-//                else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
-//
-//                if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-//                else _MM = getTimeFormat(kol,"MM") + " мес ";
-//
-//                if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-//                else _dd = getTimeFormat(kol,"dd") + " д ";
-//
-//                if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-//                else _HH = getTimeFormat(kol,"HH") + " ч ";
-//
-//                _mm = getTimeFormat(kol,"mm")+" мин";
-//
-//                eventArrayList.add(new LVEvent("Sleap",
-//                        R.drawable.krovat_lv, R.drawable.fon_lv_sleap_off,
-//                        c.getString(idColIndex),
-//                        c.getLong(time_s),c.getLong(time_e),
-//                        "Спала",
-//                        _yyyy+_MM+_dd+_HH+_mm,
-//                        getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
-//                        getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
-//                        c.getString(mess),
-//                        R.drawable.status_stop));
-//            }
-//            //---------------------------------------------------------------
-//
-//            c.moveToLast();
-//            Log.e(LOG_TAG, "Sleap status = " + c.getString(status_ColIndex));
-//
-//            if (c.getString(status_ColIndex).equals("start")) {
-//                btnSleap.setImageResource(R.drawable.krovat);
-//            } else {
-//                btnSleap.setImageResource(R.drawable.krovat_w);
-//            }
-//        }
-//        c.close();
-//
-//    } //fdzg
-//
-//    public void initDataWalk()    //обновляем данные
-//    {
-//        // создаем объект для данных
-//        ContentValues cv = new ContentValues();
-//        // подключаемся к БД
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        //dbHelper.onCreate(db);
-//
-//        //загружаем Sleap//
-//
-//        // делаем запрос всех данных из таблицы sleap, получаем Cursor
-//        Cursor c = db.query("Walk", null, null, null, null, null, null);
-//
-//        // ставим позицию курсора на первую строку выборки
-//        // если в выборке нет строк, вернется false
-//        if (c.moveToFirst()) {
-//
-//            // определяем номера столбцов по имени в выборке
-//            int idColIndex = c.getColumnIndex("id");
-//            int time_s = c.getColumnIndex("time_s");
-//            int time_e = c.getColumnIndex("time_e");
-//            int mess = c.getColumnIndex("mess");
-//            int status_ColIndex = c.getColumnIndex("status");
-//            updateDate();
-//            // do {
-//
-//            //  } while (c.moveToNext());
-//            c.moveToLast();
-//            //---------------Записываем последнюю запись-------------
-//            if (c.getString(status_ColIndex).equals("start")){
-//
-//                long kol = differenceUnixSeconds(unixSeconds,c.getLong(time_s));
-//
-//                String _yyyy,_MM,_dd,_HH,_mm;
-//
-//                if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
-//                else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-//                else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
-//
-//                if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-//                else _MM = getTimeFormat(kol,"MM") + " мес ";
-//
-//                if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-//                else _dd = getTimeFormat(kol,"dd") + " д ";
-//
-//                if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-//                else _HH = getTimeFormat(kol,"HH") + " ч ";
-//
-//                _mm = getTimeFormat(kol,"mm")+" мин";
-//                eventArrayList.add(new LVEvent("Walk",
-//                        R.drawable.krovat_lv, R.drawable.fon_lv_sleap_on,
-//                        c.getString(idColIndex),
-//                        c.getLong(time_s),c.getLong(time_e),
-//                        "Гуляем",
-//                        _yyyy+_MM+_dd+_HH+_mm,
-//                        getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
-//                        " - : - ",
-//                        c.getString(mess),
-//                        R.drawable.status_start));
-//            }
-//            else{
-//                long kol = differenceUnixSeconds(c.getLong(time_e),c.getLong(time_s));
-//
-//                String _yyyy,_MM,_dd,_HH,_mm;
-//
-//                if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
-//                else if(Integer.valueOf(getTimeFormat(kol,"yyyy"))<10) _yyyy = getTimeFormat(kol,"yyyy") + " г. ";
-//                else _yyyy = getTimeFormat(kol,"yyyy") + " л ";
-//
-//                if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-//                else _MM = getTimeFormat(kol,"MM") + " мес ";
-//
-//                if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-//                else _dd = getTimeFormat(kol,"dd") + " д ";
-//
-//                if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-//                else _HH = getTimeFormat(kol,"HH") + " ч ";
-//
-//                _mm = getTimeFormat(kol,"mm")+" мин";
-//
-//                eventArrayList.add(new LVEvent("Walk",
-//                        R.drawable.krovat_lv, R.drawable.fon_lv_sleap_off,
-//                        c.getString(idColIndex),
-//                        c.getLong(time_s),c.getLong(time_e),
-//                        "Гуляли",
-//                        _yyyy+_MM+_dd+_HH+_mm,
-//                        getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
-//                        getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
-//                        c.getString(mess),
-//                        R.drawable.status_stop));
-//            }
-//            //---------------------------------------------------------------
-//
-//            c.moveToLast();
-//            Log.e(LOG_TAG, "Walk status = " + c.getString(status_ColIndex));
-//
-//            if (c.getString(status_ColIndex).equals("start")) {
-//                btnWalk.setImageResource(R.drawable.kolaska);
-//            } else {
-//                btnWalk.setImageResource(R.drawable.kolaska_w);
-//            }
-//        }
-//        c.close();
-//
-//    } //fdzg
 
     public void initData(String _tableName, String _actionStart, String _actionStop, ImageButton _button, int _idImageActiv,int _idImagePassiv, int _idIconLv, int _idFonLvOn, int _idFonLvOff)    //обновляем данные
     {
@@ -988,4 +783,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
             });
         }
     }
+
 }

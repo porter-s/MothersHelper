@@ -43,6 +43,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //проверяете какая версия сейчас и делаете апдейт
         db.execSQL("DROP TABLE IF EXISTS Sleap");
+        db.execSQL("DROP TABLE IF EXISTS Food");
+        db.execSQL("DROP TABLE IF EXISTS Koliki");
+        db.execSQL("DROP TABLE IF EXISTS Walk");
         onCreate(db);
     }
 }
