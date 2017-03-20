@@ -59,44 +59,55 @@ public class MessActivity extends Activity {
         Button bAmSave = (Button) findViewById(R.id.bAmSave);
         final EditText tvAmMess = (EditText) findViewById(R.id.tvAmMess);
 
+        TextView tvAmDo = (TextView) findViewById(R.id.tvAmDo);
+        TextView tvAmS = (TextView) findViewById(R.id.tvAmS);
+
         tvAmMess.setText(_tvLVMess);
         tvAmEvent.setText(_tvEvent);
 
         if (_tableName.equals("Food")||_tableName.equals("Koliki"))
         {
-
-        }else
-
-        if(!getTimeFormat(_unixTimeSecond_e,"yyyy").equals("0000")) {
-            if (!(getTimeFormat(_unixTimeSecond_s, "yyyy").equals(getTimeFormat(_unixTimeSecond_e, "yyyy"))) ||
-                    !(getTimeFormat(_unixTimeSecond_s, "MM").equals(getTimeFormat(_unixTimeSecond_e, "MM"))) ||
-                    !(getTimeFormat(_unixTimeSecond_s, "dd").equals(getTimeFormat(_unixTimeSecond_e, "dd"))))
-
-            {
-                tvAmDate.setText("с " +
-                        getTimeFormat(_unixTimeSecond_s, "dd") + "." +
-                        getTimeFormat(_unixTimeSecond_s, "MM") + "." +
-                        getTimeFormat(_unixTimeSecond_s, "yyyy") + " до " +
-                        getTimeFormat(_unixTimeSecond_e, "dd") + "." +
-                        getTimeFormat(_unixTimeSecond_e, "MM") + "." +
-                        getTimeFormat(_unixTimeSecond_e, "yyyy"));
-
-                tvAmTime_s.setText(getTimeFormat(_unixTimeSecond_s, "HH") + ":" + getTimeFormat(_unixTimeSecond_s, "mm"));
-                tvAmTime_e.setText(getTimeFormat(_unixTimeSecond_e, "HH") + ":" + getTimeFormat(_unixTimeSecond_e, "mm"));
-            } else {
-                tvAmDate.setText(getTimeFormat(_unixTimeSecond_s,"dd")+"."+
-                        getTimeFormat(_unixTimeSecond_s,"MM")+ "."+
-                        getTimeFormat(_unixTimeSecond_s,"yyyy"));
-                tvAmTime_s.setText(getTimeFormat(_unixTimeSecond_s,"HH")+":"+getTimeFormat(_unixTimeSecond_s,"mm"));
-                tvAmTime_e.setText(getTimeFormat(_unixTimeSecond_e, "HH") + ":" + getTimeFormat(_unixTimeSecond_e, "mm"));
-            }
-        }
-        else {
             tvAmDate.setText(getTimeFormat(_unixTimeSecond_s,"dd")+"."+
                     getTimeFormat(_unixTimeSecond_s,"MM")+ "."+
                     getTimeFormat(_unixTimeSecond_s,"yyyy"));
             tvAmTime_s.setText(getTimeFormat(_unixTimeSecond_s,"HH")+":"+getTimeFormat(_unixTimeSecond_s,"mm"));
-            tvAmTime_e.setText("-:-");
+            tvAmDo.setText("");
+            tvAmS.setText("в");
+            tvAmTime_e.setText("");
+           // tvAmTime_e.setText(getTimeFormat(_unixTimeSecond_e, "HH") + ":" + getTimeFormat(_unixTimeSecond_e, "mm"));
+
+        }else{
+            if(!getTimeFormat(_unixTimeSecond_e,"yyyy").equals("0000")) {
+                if (!(getTimeFormat(_unixTimeSecond_s, "yyyy").equals(getTimeFormat(_unixTimeSecond_e, "yyyy"))) ||
+                        !(getTimeFormat(_unixTimeSecond_s, "MM").equals(getTimeFormat(_unixTimeSecond_e, "MM"))) ||
+                        !(getTimeFormat(_unixTimeSecond_s, "dd").equals(getTimeFormat(_unixTimeSecond_e, "dd"))))
+
+                {
+                    tvAmDate.setText("с " +
+                            getTimeFormat(_unixTimeSecond_s, "dd") + "." +
+                            getTimeFormat(_unixTimeSecond_s, "MM") + "." +
+                            getTimeFormat(_unixTimeSecond_s, "yyyy") + " до " +
+                            getTimeFormat(_unixTimeSecond_e, "dd") + "." +
+                            getTimeFormat(_unixTimeSecond_e, "MM") + "." +
+                            getTimeFormat(_unixTimeSecond_e, "yyyy"));
+
+                    tvAmTime_s.setText(getTimeFormat(_unixTimeSecond_s, "HH") + ":" + getTimeFormat(_unixTimeSecond_s, "mm"));
+                    tvAmTime_e.setText(getTimeFormat(_unixTimeSecond_e, "HH") + ":" + getTimeFormat(_unixTimeSecond_e, "mm"));
+                } else {
+                    tvAmDate.setText(getTimeFormat(_unixTimeSecond_s,"dd")+"."+
+                            getTimeFormat(_unixTimeSecond_s,"MM")+ "."+
+                            getTimeFormat(_unixTimeSecond_s,"yyyy"));
+                    tvAmTime_s.setText(getTimeFormat(_unixTimeSecond_s,"HH")+":"+getTimeFormat(_unixTimeSecond_s,"mm"));
+                    tvAmTime_e.setText(getTimeFormat(_unixTimeSecond_e, "HH") + ":" + getTimeFormat(_unixTimeSecond_e, "mm"));
+                }
+            }
+            else {
+                tvAmDate.setText(getTimeFormat(_unixTimeSecond_s,"dd")+"."+
+                        getTimeFormat(_unixTimeSecond_s,"MM")+ "."+
+                        getTimeFormat(_unixTimeSecond_s,"yyyy"));
+                tvAmTime_s.setText(getTimeFormat(_unixTimeSecond_s,"HH")+":"+getTimeFormat(_unixTimeSecond_s,"mm"));
+                tvAmTime_e.setText("-:-");
+            }
         }
 
         bAmSave.setOnClickListener(new View.OnClickListener() {
