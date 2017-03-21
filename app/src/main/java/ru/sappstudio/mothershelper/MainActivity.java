@@ -74,10 +74,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         // создаем объект для создания и управления версиями БД
         dbHelper = new DBHelper(this);
 
-//        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //SQLiteDatabase db = dbHelper.getWritableDatabase();
+
        // int k = db.getVersion();
-//        dbHelper.onUpgrade(db,1,2);
-//        db.close();
+        //dbHelper.onUpgrade(db,1,1);
+        //db.close();
         //Cursor c = db.query("Sleap", null, null, null, null, null, null);
 //        if (!c.moveToFirst())
 //            dbHelper.onUpgrade(db,1,1);
