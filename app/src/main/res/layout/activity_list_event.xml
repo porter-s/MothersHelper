@@ -24,7 +24,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBox" />
+            android:id="@+id/cbSleap" />
 
         <ImageView
             android:layout_width="20dp"
@@ -35,7 +35,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBox2" />
+            android:id="@+id/cbFood" />
 
         <ImageView
             android:layout_width="20dp"
@@ -46,7 +46,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBox3" />
+            android:id="@+id/cbKoliki" />
 
         <ImageView
             android:layout_width="20dp"
@@ -57,7 +57,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/checkBox4" />
+            android:id="@+id/cbWalk" />
 
         <ImageView
             android:layout_width="20dp"
@@ -66,12 +66,12 @@
             android:id="@+id/imageView4" />
     </LinearLayout>
 
-    <LinearLayout
+    <ListView
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:id="@+id/lvAle"
         android:layout_height="0dp"
-        android:layout_weight="80"></LinearLayout>
+        android:layout_weight="80"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -79,19 +79,10 @@
         android:layout_weight="8">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Удалить"
-            android:id="@+id/button"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:background="#fa6363" />
-
-        <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Назад"
-            android:id="@+id/button2"
+            android:id="@+id/btnALeBack"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:background="#4ae5f7" />

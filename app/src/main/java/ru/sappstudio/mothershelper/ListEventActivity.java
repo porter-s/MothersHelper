@@ -4,15 +4,19 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +27,7 @@ import java.util.Date;
  */
 public class ListEventActivity extends Activity{
 
+    String yyyy,MM,dd;
     String LOG_TAG = "ListEventActivity";
     long unixSeconds = System.currentTimeMillis() / 1000L; // секунды
     Date date = new Date(unixSeconds*1000L); // *1000 получаем миллисекунды
@@ -53,13 +58,36 @@ public class ListEventActivity extends Activity{
     ArrayList<LVEvent> eventArrayList = new ArrayList<LVEvent>();
     LVListEventAdapter lvListEventAdapter;
     DBHelper dbHelper;
-
+    CheckBox cbSleap,cbFood,cbKoliki,cbWalk;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_event);
+
+        yyyy =getTimeFormat(unixSeconds,"yyyy");
+        MM =getTimeFormat(unixSeconds,"MM");
+        dd =getTimeFormat(unixSeconds,"dd");
+
         ListView lvAle = (ListView)findViewById(R.id.lvAle);
         btnALeDatePicker = (Button) findViewById(R.id.btnALeDatePicker);
+        cbSleap = (CheckBox) findViewById(R.id.cbSleap);
+        cbFood = (CheckBox) findViewById(R.id.cbFood);
+        cbKoliki = (CheckBox) findViewById(R.id.cbKoliki);
+        cbWalk = (CheckBox) findViewById(R.id.cbWalk);
+        Button btnALeBack = (Button) findViewById(R.id.btnALeBack);
+        btnALeBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        Intent intent = getIntent();
+
+        if(intent.getStringExtra("_tableName").equals("Sleap"))cbSleap.setChecked(true);
+        if(intent.getStringExtra("_tableName").equals("Food"))cbFood.setChecked(true);
+        if(intent.getStringExtra("_tableName").equals("Koliki"))cbKoliki.setChecked(true);
+        if(intent.getStringExtra("_tableName").equals("Walk"))cbWalk.setChecked(true);
 
         dbHelper = new DBHelper(this);
         lvListEventAdapter = new LVListEventAdapter(this, eventArrayList);
@@ -68,14 +96,49 @@ public class ListEventActivity extends Activity{
         lvAle.setAdapter(lvListEventAdapter);
 
 
-        btnALeDatePicker.setText(getTimeFormat(unixSeconds,"dd")+"."+getTimeFormat(unixSeconds,"MM")+"."+getTimeFormat(unixSeconds,"yyyy"));
+        btnALeDatePicker.setText(getTimeFormat(unixSeconds, "dd") + "." + getTimeFormat(unixSeconds, "MM") + "." + getTimeFormat(unixSeconds, "yyyy"));
         btnALeDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDialog(DIALOG_DATE);
             }
         });
+
+        cbSleap.setOnCheckedChangeListener(CheckChangecbSleap);
+        cbFood.setOnCheckedChangeListener(CheckChangecbFood);
+        cbKoliki.setOnCheckedChangeListener(CheckChangecbKoliki);
+        cbWalk.setOnCheckedChangeListener(CheckChangecbWalk);
     }
+
+
+    CompoundButton.OnCheckedChangeListener CheckChangecbSleap = new CompoundButton.OnCheckedChangeListener() {
+        public void onCheckedChanged(CompoundButton buttonView,
+                                     boolean isChecked) {
+            if(isChecked)cbSleap.setChecked(true);
+            updateLV();
+        }
+    };
+    CompoundButton.OnCheckedChangeListener CheckChangecbFood = new CompoundButton.OnCheckedChangeListener() {
+        public void onCheckedChanged(CompoundButton buttonView,
+                                     boolean isChecked) {
+            if(isChecked)cbFood.setChecked(true);
+            updateLV();
+        }
+    };
+    CompoundButton.OnCheckedChangeListener CheckChangecbKoliki = new CompoundButton.OnCheckedChangeListener() {
+        public void onCheckedChanged(CompoundButton buttonView,
+                                     boolean isChecked) {
+            if(isChecked)cbKoliki.setChecked(true);
+            updateLV();
+        }
+    };
+    CompoundButton.OnCheckedChangeListener CheckChangecbWalk = new CompoundButton.OnCheckedChangeListener() {
+        public void onCheckedChanged(CompoundButton buttonView,
+                                     boolean isChecked) {
+            if(isChecked)cbWalk.setChecked(true);
+            updateLV();
+        }
+    };
 
 
     public Dialog onCreateDialog(int id) {
@@ -90,11 +153,21 @@ public class ListEventActivity extends Activity{
 
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-//            myYear = year;
-//            myMonth = monthOfYear+1;
-//            myDay = dayOfMonth;
-            //long _unixTime = year*31536000 + (monthOfYear+1)*2628002 + dayOfMonth*86400;
-          //  btnALeDatePicker.setText(getTimeFormat(_unixTime,"dd")+"."+getTimeFormat(_unixTime,"MM")+"."+getTimeFormat(_unixTime,"yyyy"));
+
+            myYear = year;
+            myMonth = monthOfYear+1;
+            myDay = dayOfMonth;
+
+            yyyy = String.valueOf(myYear);
+
+            if(myMonth<10) MM = "0"+String.valueOf(myMonth);
+            else MM = String.valueOf(myMonth);
+
+            if(myDay<10) dd = "0"+String.valueOf(myDay);
+            else dd = String.valueOf(myDay);
+
+            btnALeDatePicker.setText(dd+"."+MM+"."+yyyy);
+            updateLV();
             Log.e(LOG_TAG, "Today is " + myDay + "/" + myMonth + "/" + myYear);
         }
     };
@@ -164,7 +237,8 @@ public class ListEventActivity extends Activity{
                     if (getTimeFormat(kol, "HH").equals("00")) _HH = "";
                     else _HH = getTimeFormat(kol, "HH");
 
-                    _mm = getTimeFormat(kol, "mm") + " мин";
+                    _mm = getTimeFormat(kol, "mm") + "";
+                    if(_yyyy.equals(yyyy)&&_MM.equals(MM)&&_dd.equals(dd))
                     eventArrayList.add(new LVEvent(_tableName,
                             _idIconLv, _idFonLvOn,
                             c.getString(idColIndex),
@@ -172,7 +246,52 @@ public class ListEventActivity extends Activity{
                             _actionStart,
                             getTimeFormat(c.getLong(time), "HH") + "-" + getTimeFormat(c.getLong(time), "mm"),
                             "",
-                            _dd + "." + _MM + "." + _yyyy,
+                            "", //_dd + "." + _MM + "." + _yyyy,
+                            c.getString(mess),
+                            R.drawable.status_stop));
+                } while (c.moveToNext());
+            }
+        }else{
+            if (c.moveToFirst()) {
+                // определяем номера столбцов по имени в выборке
+                int idColIndex = c.getColumnIndex("id");
+                int time_s = c.getColumnIndex("time_s");
+                int time_e = c.getColumnIndex("time_e");
+                int mess = c.getColumnIndex("mess");
+                int status_ColIndex = c.getColumnIndex("status");
+
+                do {
+
+                    long kol = differenceUnixSeconds(c.getLong(time_e),c.getLong(time_s));
+
+                    String _yyyy,_MM,_dd,_HH,_mm;
+
+                    if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
+                    else _yyyy = getTimeFormat(kol,"yyyy")+"л/";
+
+                    if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
+                    else _MM = getTimeFormat(kol,"MM")+"м/";
+
+                    if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
+                    else _dd = getTimeFormat(kol,"dd")+"д/ ";
+
+                    if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
+                    else _HH = getTimeFormat(kol,"HH")+":";
+
+                    _mm = getTimeFormat(kol,"mm");
+
+                    if(getTimeFormat(c.getLong(time_s),"yyyy").equals(yyyy)&&
+                            getTimeFormat(c.getLong(time_s),"MM").equals(MM)&&
+                            getTimeFormat(c.getLong(time_s),"dd").equals(dd)&&
+                            c.getString(status_ColIndex).equals("stop"))
+                    eventArrayList.add(new LVEvent(_tableName,
+                            _idIconLv, _idFonLvOff,
+                            c.getString(idColIndex),
+                            c.getLong(time_s),c.getLong(time_e),
+                            _actionStop,
+                            _yyyy+_MM+_dd+_HH+_mm,
+                            getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
+                            getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
                             c.getString(mess),
                             R.drawable.status_stop));
                 } while (c.moveToNext());
@@ -180,16 +299,30 @@ public class ListEventActivity extends Activity{
         }
         c.close();
     }
+
+    long differenceUnixSeconds(long _a,long _b)
+    {
+        return _a-_b;
+    }
     void updateLV()
     {
         eventArrayList.clear();
-
-        //initData("Sleap", "Спим", "Спали", null, R.drawable.krovat, R.drawable.krovat_w, R.drawable.krovat, R.drawable.fon_lv_sleap_on, R.drawable.fon_lv_sleap_off);
-        //initData("Food", "Ели", "Ели", null, R.drawable.but_w, R.drawable.but_w, R.drawable.but, R.drawable.fon_lv_but_on, R.drawable.fon_lv_but_off);
-        initData("Koliki", "Колики", "Колики", null, R.drawable.koliki_w, R.drawable.koliki_w, R.drawable.koliki, R.drawable.fon_lv_koliki_on, R.drawable.fon_lv_koliki_off);
-       // initData("Walk", "Гуляем", "Гуляли", null, R.drawable.kolaska, R.drawable.kolaska_w, R.drawable.kolaska, R.drawable.fon_lv_kolaska_on, R.drawable.fon_lv_kolaska_off);
+        if (cbSleap.isChecked())
+            initData("Sleap", "Спим", "Спали", null, R.drawable.krovat, R.drawable.krovat_w, R.drawable.krovat, R.drawable.fon_lv_sleap_on, R.drawable.fon_lv_sleap_off);
+        if (cbFood.isChecked())
+            initData("Food", "Ели", "Ели", null, R.drawable.but_w, R.drawable.but_w, R.drawable.but, R.drawable.fon_lv_but_on, R.drawable.fon_lv_but_off);
+        if (cbKoliki.isChecked())
+            initData("Koliki", "Колики", "Колики", null, R.drawable.koliki_w, R.drawable.koliki_w, R.drawable.koliki, R.drawable.fon_lv_koliki_on, R.drawable.fon_lv_koliki_off);
+        if (cbWalk.isChecked())
+            initData("Walk", "Гуляем", "Гуляли", null, R.drawable.kolaska, R.drawable.kolaska_w, R.drawable.kolaska, R.drawable.fon_lv_kolaska_on, R.drawable.fon_lv_kolaska_off);
 
         lvListEventAdapter.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateLV();
     }
 }

@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
             <LinearLayout
@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_marginLeft="30dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="3:15"
                     android:id="@+id/tvLveTimeEvent"
@@ -88,7 +88,7 @@
                     android:textStyle="bold"
                     android:textSize="25dp"
                     android:layout_gravity="center_horizontal"
-                    android:gravity="bottom|center_horizontal" />
+                    android:gravity="bottom|end" />
             </LinearLayout>
 
             <TextView
