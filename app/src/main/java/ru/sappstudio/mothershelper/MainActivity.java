@@ -776,10 +776,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             runOnUiThread(new Runnable() {
                @Override
                public void run() {
-                   if((unixSeconds - System.currentTimeMillis() / 1000L)>=60)
-                   {
                        updateLV();
-                   }else unixSeconds = System.currentTimeMillis() / 1000L;
                }
             });
         }

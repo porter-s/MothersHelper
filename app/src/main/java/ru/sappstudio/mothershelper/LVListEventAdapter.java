@@ -72,6 +72,25 @@ public class LVListEventAdapter extends BaseAdapter{
             ((TextView) view.findViewById(R.id.tvLveS)).setText("");
             ((TextView) view.findViewById(R.id.tvLveDo)).setText("");
         }
+
+        ((TextView) view.findViewById(R.id.tvLveEvent)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(LOG_TAG, "OnClick tvLveEvent");
+                Intent intent = new Intent((((Activity) _context)), GraphActivity.class);
+
+                intent.putExtra("_tvEvent", p.tvEvent);
+                intent.putExtra("_tableName", p.tableName);
+                intent.putExtra("_id", p.id);
+                intent.putExtra("_tvLVMess", p.tvLVMess);
+                intent.putExtra("_unixTimeSecond_s", Long.valueOf(p.unixTimeSecond_s));
+                intent.putExtra("_unixTimeSecond_e", Long.valueOf(p.unixTimeSecond_e));
+
+                ((Activity) _context).startActivity(intent);
+            }
+        });
+
+
             ((TextView) view.findViewById(R.id.tvLveMess)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
