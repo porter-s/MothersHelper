@@ -16,11 +16,12 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.TreeSet;
 
 /**
  * Created by USER on 20.03.2017.
@@ -316,6 +317,14 @@ public class ListEventActivity extends Activity{
         if (cbWalk.isChecked())
             initData("Walk", "Гуляем", "Гуляли", null, R.drawable.kolaska, R.drawable.kolaska_w, R.drawable.kolaska, R.drawable.fon_lv_kolaska_on, R.drawable.fon_lv_kolaska_off);
 
+
+        // TreeSet
+//        ArrayList<LVEvent> sortedSet = new TreeSet<LVEvent>(new Comparator<LVEvent>() {
+//            public int compare(eventArrayList.get().tvStarEvent, ObjectName o2) {
+//                return o1.toString().compareTo(o2.toString());
+//            }
+//        });
+        sortedSet.addAll(unsortedSet);
         lvListEventAdapter.notifyDataSetChanged();
 
     }
