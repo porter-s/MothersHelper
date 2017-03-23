@@ -86,5 +86,13 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:background="#4ae5f7" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:background="#5ef74a"
+            android:id="@+id/btnAleAdd" />
     </RelativeLayout>
 </LinearLayout>

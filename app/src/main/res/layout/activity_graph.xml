@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="7"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="График Сна (кол/день)"
         android:id="@+id/tvGraphName"
@@ -24,7 +24,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="10"
+        android:layout_weight="8"
         android:text="Назад"
         android:id="@+id/btnAGBack"
         android:layout_alignParentTop="true"

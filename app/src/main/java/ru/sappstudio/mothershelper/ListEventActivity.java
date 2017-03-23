@@ -100,6 +100,17 @@ public class ListEventActivity extends Activity {
         if (intent.getStringExtra("_tableName").equals("Koliki")) cbKoliki.setChecked(true);
         if (intent.getStringExtra("_tableName").equals("Walk")) cbWalk.setChecked(true);
 
+        final String _str = intent.getStringExtra("_tableName");
+        Button btnAleAdd = (Button) findViewById(R.id.btnAleAdd);
+        btnAleAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent_add = new Intent(ListEventActivity.this,NewDBRecord.class);
+                intent_add.putExtra("_tableName",_str);
+                startActivity(intent_add);
+            }
+        });
+
         dbHelper = new DBHelper(this);
         lvListEventAdapter = new LVListEventAdapter(this, eventArrayList);
         updateLV();
