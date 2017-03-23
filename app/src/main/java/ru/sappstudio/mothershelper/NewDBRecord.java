@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +29,7 @@ import java.util.Date;
  */
 public class NewDBRecord extends Activity {
 
-    String yyyy_s, MM_s, dd_s, yyyy_e, MM_e, dd_e, mess="", tebleN="",status = "stop";
+    String yyyy_s, MM_s, dd_s, yyyy_e, MM_e, dd_e, mess="", tableN="",status = "stop";
     int HH_s,mm_s,HH_e,mm_e;
     long time_s=0,time_e=0;
     String[] data = {"Сон", "Еда", "Колики", "Прогулка"};
@@ -71,6 +74,12 @@ public class NewDBRecord extends Activity {
         bAnDBrAdd = (Button)findViewById(R.id.bAnDBrAdd);
         final EditText etAnDBrMess = (EditText)findViewById(R.id.etAnDBrMess);
 
+        yyyy_s=getTimeFormat(unixSeconds,"yyyy");
+        MM_s=getTimeFormat(unixSeconds,"MM");
+        dd_s=getTimeFormat(unixSeconds,"dd");
+        yyyy_e=getTimeFormat(unixSeconds,"yyyy");
+        MM_e=getTimeFormat(unixSeconds,"MM");
+        dd_e=getTimeFormat(unixSeconds,"dd");
         // адаптер
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -171,16 +180,16 @@ public class NewDBRecord extends Activity {
                 Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
                 switch(position){
                     case 0:
-                        tebleN = "Sleap";
+                        tableN = "Sleap";
                         break;
                     case 1:
-                        tebleN = "Food";
+                        tableN = "Food";
                         break;
                     case 2:
-                        tebleN = "Koliki";
+                        tableN = "Koliki";
                         break;
                     case 3:
-                        tebleN = "Walk";
+                        tableN = "Walk";
                         break;
 
                 }
@@ -211,10 +220,41 @@ public class NewDBRecord extends Activity {
             @Override
             public void onClick(View v) {
                 mess = String.valueOf(etAnDBrMess.getText());
-                time_s = (long)Integer.valueOf(yyyy_s)*31536000 + Integer.valueOf(MM_s)*2628002 +Integer.valueOf(dd_s)*86400 +HH_s*3600 +mm_s;
-                time_e = (long)Integer.valueOf(yyyy_e)*31536000 + Integer.valueOf(MM_e)*2628002 +Integer.valueOf(dd_e)*86400 +HH_e*3600 +mm_e;
-                if(time_s!=0&&time_e!=0&&time_e>=time_s&&!tebleN.equals("")){
-                    Toast.makeText(getBaseContext(), "Add!" , Toast.LENGTH_SHORT).show();
+                time_s = (long)Integer.valueOf(yyyy_s)*525600 + (long)Integer.valueOf(MM_s)*43800 +(long)Integer.valueOf(dd_s)*1440 +(long)HH_s*60 +(long)mm_s;
+                time_e = (long)Integer.valueOf(yyyy_e)*31536000 + (long)Integer.valueOf(MM_e)*2628002 +(long)Integer.valueOf(dd_e)*86400 +(long)HH_e*3600 +(long)mm_e;
+                Log.e(LOG_TAG,"yyyy_s="+yyyy_s+" MM_s="+MM_s+" dd_s="+dd_s);
+                Log.e(LOG_TAG,"time_s="+time_s+" time_e="+time_e+" unixs="+unixSeconds);
+                if(time_s!=0&&time_e!=0&&time_e>=time_s&&!tableN.equals("")){
+
+
+                    DBHelper dbHelper = new DBHelper(NewDBRecord.this);
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                    Cursor c = db.query(tableN, null, null, null, null, null, null);
+
+                    int idColIndex = c.getColumnIndex("id");
+                    ContentValues cv = new ContentValues();
+                    if(tableN.equals("Koliki")||tableN.equals("Food"))
+                    {
+                        cv.put("time", time_s);
+                        cv.put("mess", mess);
+                        cv.put("status", "stop");
+                    }else
+                    {
+                        cv.put("time_s", time_s);
+                        cv.put("time_e", time_e);
+                        cv.put("mess", mess);
+                        cv.put("status", "stop");
+                    }
+
+                    // вставляем запись и получаем ее ID
+                    // обновляем по id
+                    Log.e(LOG_TAG, "--- Update mytable: ---");
+
+                    long rowID = db.insert(tableN, null, cv);
+
+                    db.close();
+
+                    Toast.makeText(getBaseContext(), "Add! " + tableN + " kol= "+rowID, Toast.LENGTH_SHORT).show();
                 }else Toast.makeText(getBaseContext(), "Error!" , Toast.LENGTH_SHORT).show();
 
             }

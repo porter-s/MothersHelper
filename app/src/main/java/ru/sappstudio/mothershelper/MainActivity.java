@@ -74,7 +74,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         dbHelper = new DBHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.query("Sleap", null, null, null, null, null, null);
-        if(c==null){
+        int mess = c.getColumnIndex("mess");
+        if(mess<0){
             dbHelper.onUpgrade(db,1,1);
             Log.e(LOG_TAG,"Error DB - new DB");
         }else Log.e(LOG_TAG,"DB done");
