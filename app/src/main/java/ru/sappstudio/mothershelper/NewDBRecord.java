@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -220,8 +221,24 @@ public class NewDBRecord extends Activity {
             @Override
             public void onClick(View v) {
                 mess = String.valueOf(etAnDBrMess.getText());
-                time_s = (long)Integer.valueOf(yyyy_s)*525600 + (long)Integer.valueOf(MM_s)*43800 +(long)Integer.valueOf(dd_s)*1440 +(long)HH_s*60 +(long)mm_s;
-                time_e = (long)Integer.valueOf(yyyy_e)*31536000 + (long)Integer.valueOf(MM_e)*2628002 +(long)Integer.valueOf(dd_e)*86400 +(long)HH_e*3600 +(long)mm_e;
+                //time_s = new SimpleDateFormat(dd_s+"/"+MM_s+"/"+yyyy_s+"");
+                Date dTemp = null;
+                try {
+                    dTemp  =  new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(dd_s+"/"+MM_s+"/"+yyyy_s+" "+HH_s+":"+mm_s+":00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.e(LOG_TAG,"dTemp="+String.valueOf(dTemp.getTime()/1000));
+                time_s = dTemp.getTime()/1000 ;
+
+                try {
+                    dTemp  =  new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(dd_e+"/"+MM_e+"/"+yyyy_e+" "+HH_e+":"+mm_e+":00");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.e(LOG_TAG,"dTemp="+String.valueOf(dTemp.getTime()/1000));
+                time_e = dTemp.getTime()/1000 ;
+
                 Log.e(LOG_TAG,"yyyy_s="+yyyy_s+" MM_s="+MM_s+" dd_s="+dd_s);
                 Log.e(LOG_TAG,"time_s="+time_s+" time_e="+time_e+" unixs="+unixSeconds);
                 if(time_s!=0&&time_e!=0&&time_e>=time_s&&!tableN.equals("")){
