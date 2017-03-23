@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -63,9 +64,9 @@ public class GraphActivity extends Activity {
         if (_tableName.equals("Food"))
             tvGraphName.setText("График Питания (кол/день)");
         if (_tableName.equals("Sleap"))
-            tvGraphName.setText("График Сна (кол/день)");
+            tvGraphName.setText("График Сна (час/день)");
         if (_tableName.equals("Walk"))
-            tvGraphName.setText("График Прогулок (кол/день)");
+            tvGraphName.setText("График Прогулок (час/день)");
 
 
         if (getTimeFormat(time_s_b, "yyyy").equals("0000")) yyyy = "";
@@ -93,6 +94,7 @@ public class GraphActivity extends Activity {
 
         DataPoint[] dataPoint = new DataPoint[31];
         // делаем запрос всех данных из таблицы sleap, получаем Cursor
+
 
         Cursor c = db.query(_tableName, null, null, null, null, null, null);
         if (_tableName.equals("Koliki") || _tableName.equals("Food")) {
@@ -129,10 +131,11 @@ public class GraphActivity extends Activity {
             if (c.moveToFirst()) {
                 // определяем номера столбцов по имени в выборке
                 int time_s = c.getColumnIndex("time_s");
+                int time_e = c.getColumnIndex("time_e");
                 int status_ColIndex = c.getColumnIndex("status");
                 int time = c.getColumnIndex("time_s");
                 for (int i = 1; i <= 31; i++) {
-                    int kol_z = 0;
+                    long kol_z = 0;
 
                     do {
 
@@ -150,21 +153,25 @@ public class GraphActivity extends Activity {
                         if (getTimeFormat(c.getLong(time_s), "yyyy").equals(yyyy) &&
                                 getTimeFormat(c.getLong(time_s), "MM").equals(MM) &&
                                 i == Integer.valueOf(_dd) &&
-                                c.getString(status_ColIndex).equals("stop"))
-                            kol_z++;
-
+                                c.getString(status_ColIndex).equals("stop")){
+                            kol_z= kol_z + c.getLong(time_e) - c.getLong(time_s);              //kol_z++;
+                        }
                     } while (c.moveToNext());
-                    dataPoint[i - 1] = new DataPoint(i, kol_z);
+                    //Log.e(LOG_TAG,"kol_z = "+kol_z);
+                    double buf = (double) kol_z/3600;
+                    //kol_z = kol_z/3600;
+                   // Log.e(LOG_TAG,"buf = "+buf);
+                    dataPoint[i - 1] = new DataPoint(i, buf);
                     c.moveToFirst();
                 }
 
             }
         }
     db.close();
+        c.close();
             // dataPoint[0] = new DataPoint(0,2);
-
+        if (_tableName.equals("Koliki") || _tableName.equals("Food")) {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoint);
-
             if (_tableName.equals("Koliki"))
                 series.setColor(Color.parseColor("#55AAFF"));
             if (_tableName.equals("Food"))
@@ -178,12 +185,12 @@ public class GraphActivity extends Activity {
             series.setDataPointsRadius(10);
             series.setThickness(5);
             Log.e(LOG_TAG, "dataPoint = " + dataPoint.length);
-            c.close();
+
 
             // set manual X bounds
             graph.getViewport().setYAxisBoundsManual(true);
             graph.getViewport().setMinY(0);
-            graph.getViewport().setMaxY(10);
+            graph.getViewport().setMaxY(5);
 
             graph.getViewport().setXAxisBoundsManual(true);
             graph.getViewport().setMinX(1);
@@ -196,7 +203,40 @@ public class GraphActivity extends Activity {
             graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
 
             graph.addSeries(series);
+        }else{
+            BarGraphSeries<DataPoint> series = new BarGraphSeries<>(dataPoint);
+            series = new BarGraphSeries<>(dataPoint);
+            if (_tableName.equals("Koliki"))
+                series.setColor(Color.parseColor("#55AAFF"));
+            if (_tableName.equals("Food"))
+                series.setColor(Color.parseColor("#8efe59"));
+            if (_tableName.equals("Sleap"))
+                series.setColor(Color.parseColor("#d753f4"));
+            if (_tableName.equals("Walk"))
+                series.setColor(Color.parseColor("#fa7548"));
+
+            // set manual X bounds
+            graph.getViewport().setYAxisBoundsManual(true);
+            graph.getViewport().setMinY(0);
+            graph.getViewport().setMaxY(3);
+
+
+            graph.getViewport().setXAxisBoundsManual(true);
+            graph.getViewport().setMinX(1);
+            graph.getViewport().setMaxX(31);
+
+            // enable scaling and scrolling
+            graph.getViewport().setScrollable(true); // enables horizontal scrolling
+            graph.getViewport().setScrollableY(true); // enables vertical scrolling
+            graph.getViewport().setScalable(true); // enables horizontal zooming and scrolling
+            graph.getViewport().setScalableY(true); // enables vertical zooming and scrolling
+
+            graph.addSeries(series);
+        }
+
     }
+
+
 
     String getTimeFormat(long _unixSeconds, String _format){
 

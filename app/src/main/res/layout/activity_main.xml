@@ -58,7 +58,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/btnFood"
                 android:layout_weight="25"
-                android:src="@drawable/but_w"
+                android:src="@drawable/button_food"
                 android:scaleType="fitCenter"
                 android:background="#8efe59" />
 
@@ -75,7 +75,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/btnKoliki"
                 android:layout_weight="25"
-                android:src="@drawable/koliki_w"
+                android:src="@drawable/button_koliki"
                 android:scaleType="fitCenter"
                 android:background="#55AAFF" />
 

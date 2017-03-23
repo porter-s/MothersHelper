@@ -71,8 +71,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnWalk = (ImageButton) findViewById(R.id.btnWalk);
         btnWalk.setOnClickListener(this);
 
-        // создаем объект для создания и управления версиями БД
         dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor c = db.query("Sleap", null, null, null, null, null, null);
+        if(c==null){
+            dbHelper.onUpgrade(db,1,1);
+            Log.e(LOG_TAG,"Error DB - new DB");
+        }else Log.e(LOG_TAG,"DB done");
+        db.close();
+        // создаем объект для создания и управления версиями БД
 
         //SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -391,7 +398,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 if(unixSeconds - c.getLong(timeColIndex)>300)
                 {
                     //Log.e(LOG_TAG, "DB = null");
-                    btnFood.setImageResource(R.drawable.but);
+//                    btnFood.setImageResource(R.drawable.but);
                     Log.e(LOG_TAG, "--- Insert in Food: ---");
                     updateDate();
 //                  Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
@@ -405,21 +412,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Кушаем!", Toast.LENGTH_LONG);
                     toast.show();
-                    btnFood.setImageResource(R.drawable.but_w);
+//                    btnFood.setImageResource(R.drawable.but_w);
                 }else{
-                    btnFood.setImageResource(R.drawable.but);
+//                    btnFood.setImageResource(R.drawable.but);
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Не прошло и 5 минут.\n  Отмена действия!)", Toast.LENGTH_LONG);
                     toast.show();
                     // удаляем последнюю запись
                     int clearCount = db.delete("Food", "id = "+String.valueOf(c.getInt(idColIndex)),null);
                     Log.e(LOG_TAG, "deleted rows count = " + clearCount + " id = "+String.valueOf(c.getInt(idColIndex)));
-                    btnFood.setImageResource(R.drawable.but_w);
+//                    btnFood.setImageResource(R.drawable.but_w);
                 }
             }else
             {
                 Log.e(LOG_TAG, "DB = null");
-                btnFood.setImageResource(R.drawable.but);
+//                btnFood.setImageResource(R.drawable.but);
                 Log.e(LOG_TAG, "--- Insert in Food: ---");
                 updateDate();
 //                Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
@@ -433,11 +440,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Кушаем!", Toast.LENGTH_LONG);
                 toast.show();
-                btnFood.setImageResource(R.drawable.but_w);
+//                btnFood.setImageResource(R.drawable.but_w);
             }
         } else {
             Log.e(LOG_TAG, "DB = null");
-            btnFood.setImageResource(R.drawable.but);
+//            btnFood.setImageResource(R.drawable.but);
             Log.e(LOG_TAG, "--- Insert in Food: ---");
             updateDate();
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
@@ -451,7 +458,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Кушаем!", Toast.LENGTH_LONG);
             toast.show();
-            btnFood.setImageResource(R.drawable.but_w);
+//            btnFood.setImageResource(R.drawable.but_w);
         }
 
 
@@ -487,7 +494,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 if(unixSeconds - c.getLong(timeColIndex)>300)
                 {
                     //Log.e(LOG_TAG, "DB = null");
-                    btnKoliki.setImageResource(R.drawable.koliki);
+                    //btnKoliki.setImageResource(R.drawable.koliki);
                     Log.e(LOG_TAG, "--- Insert in Koliki: ---");
                     updateDate();
 //                  Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
@@ -501,21 +508,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Колик:(", Toast.LENGTH_LONG);
                     toast.show();
-                    btnKoliki.setImageResource(R.drawable.koliki_w);
+//                    btnKoliki.setImageResource(R.drawable.koliki_w);
                 }else{
-                    btnKoliki.setImageResource(R.drawable.koliki);
+//                    btnKoliki.setImageResource(R.drawable.koliki);
                     Toast toast = Toast.makeText(getApplicationContext(),
                             "Не прошло и 5 минут.\n  Отмена действия!)", Toast.LENGTH_LONG);
                     toast.show();
                     // удаляем последнюю запись
                     int clearCount = db.delete("Koliki", "id = "+String.valueOf(c.getInt(idColIndex)),null);
                     Log.e(LOG_TAG, "deleted rows count = " + clearCount + " id = "+String.valueOf(c.getInt(idColIndex)));
-                    btnKoliki.setImageResource(R.drawable.koliki_w);
+//                    btnKoliki.setImageResource(R.drawable.koliki_w);
                 }
             }else
             {
                 Log.e(LOG_TAG, "DB = null");
-                btnKoliki.setImageResource(R.drawable.koliki);
+//                btnKoliki.setImageResource(R.drawable.koliki);
                 Log.e(LOG_TAG, "--- Insert in Koliki: ---");
                 updateDate();
 //                Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
@@ -529,11 +536,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Колик:(", Toast.LENGTH_LONG);
                 toast.show();
-                btnKoliki.setImageResource(R.drawable.koliki_w);
+//                btnKoliki.setImageResource(R.drawable.koliki_w);
             }
         } else {
             Log.e(LOG_TAG, "DB = null");
-            btnKoliki.setImageResource(R.drawable.koliki);
+//            btnKoliki.setImageResource(R.drawable.koliki);
             Log.e(LOG_TAG, "--- Insert in Koliki: ---");
             updateDate();
 //            Log.e(LOG_TAG, "год= " + year_yyyy + " месяц ="+month_MM+" число= "+day_dd + " HHmm= "+time_HHmm);
@@ -547,7 +554,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Колик:(", Toast.LENGTH_LONG);
             toast.show();
-            btnKoliki.setImageResource(R.drawable.koliki_w);
+//            btnKoliki.setImageResource(R.drawable.koliki_w);
         }
 
 
@@ -611,16 +618,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 else _HH = getTimeFormat(kol, "HH");
 
                 _mm = getTimeFormat(kol, "mm") + " мин";
-                eventArrayList.add(new LVEvent(_tableName,
-                        _idIconLv, _idFonLvOn,
-                        c.getString(idColIndex),
-                        c.getLong(time), c.getLong(time),
-                        _actionStart,
-                        getTimeFormat(c.getLong(time), "HH") + "-" + getTimeFormat(c.getLong(time), "mm"),
-                        "",
-                        _dd+"."+_MM+"."+_yyyy,
-                        c.getString(mess),
-                        R.drawable.status_stop));
+                if (differenceUnixSeconds(unixSeconds,c.getLong(time))<300){
+                    eventArrayList.add(new LVEvent(_tableName,
+                            _idIconLv, _idFonLvOn,
+                            c.getString(idColIndex),
+                            c.getLong(time), c.getLong(time),
+                            _actionStart,
+                            getTimeFormat(c.getLong(time), "HH") + "-" + getTimeFormat(c.getLong(time), "mm"),
+                            "",
+                            _dd+"."+_MM+"."+_yyyy,
+                            c.getString(mess),
+                            R.drawable.status_start));
+                }else{
+                    eventArrayList.add(new LVEvent(_tableName,
+                            _idIconLv, _idFonLvOn,
+                            c.getString(idColIndex),
+                            c.getLong(time), c.getLong(time),
+                            _actionStart,
+                            getTimeFormat(c.getLong(time), "HH") + "-" + getTimeFormat(c.getLong(time), "mm"),
+                            "",
+                            _dd+"."+_MM+"."+_yyyy,
+                            c.getString(mess),
+                            R.drawable.status_stop));
+                }
+
             }
         }else
         if (c.moveToFirst()) {

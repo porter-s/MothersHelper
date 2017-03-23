@@ -69,8 +69,11 @@ public class LVListEventAdapter extends BaseAdapter{
 
         if(p.tableName.equals("Food")||p.tableName.equals("Koliki"))
         {
-            ((TextView) view.findViewById(R.id.tvLveS)).setText("");
+            ((TextView) view.findViewById(R.id.tvLveS)).setText("в");
             ((TextView) view.findViewById(R.id.tvLveDo)).setText("");
+        }else{
+            ((TextView) view.findViewById(R.id.tvLveS)).setText("с");
+            ((TextView) view.findViewById(R.id.tvLveDo)).setText("до");
         }
 
         ((TextView) view.findViewById(R.id.tvLveEvent)).setOnClickListener(new View.OnClickListener() {

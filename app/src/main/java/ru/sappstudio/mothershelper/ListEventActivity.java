@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,21 +18,25 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.TreeSet;
 
 /**
  * Created by USER on 20.03.2017.
  */
-public class ListEventActivity extends Activity{
+public class ListEventActivity extends Activity {
 
-    String yyyy,MM,dd;
+    String yyyy, MM, dd;
     String LOG_TAG = "ListEventActivity";
     long unixSeconds = System.currentTimeMillis() / 1000L; // секунды
-    Date date = new Date(unixSeconds*1000L); // *1000 получаем миллисекунды
+    Date date = new Date(unixSeconds * 1000L); // *1000 получаем миллисекунды
 
     SimpleDateFormat sdf_yyyy = new SimpleDateFormat("yyyy");
     int year_yyyy = Integer.valueOf(sdf_yyyy.format(date));
@@ -59,17 +64,22 @@ public class ListEventActivity extends Activity{
     ArrayList<LVEvent> eventArrayList = new ArrayList<LVEvent>();
     LVListEventAdapter lvListEventAdapter;
     DBHelper dbHelper;
-    CheckBox cbSleap,cbFood,cbKoliki,cbWalk;
+    CheckBox cbSleap, cbFood, cbKoliki, cbWalk;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_event);
 
-        yyyy =getTimeFormat(unixSeconds,"yyyy");
-        MM =getTimeFormat(unixSeconds,"MM");
-        dd =getTimeFormat(unixSeconds,"dd");
+        yyyy = getTimeFormat(unixSeconds, "yyyy");
+        MM = getTimeFormat(unixSeconds, "MM");
+        dd = getTimeFormat(unixSeconds, "dd");
 
-        ListView lvAle = (ListView)findViewById(R.id.lvAle);
+        ListView lvAle = (ListView) findViewById(R.id.lvAle);
         btnALeDatePicker = (Button) findViewById(R.id.btnALeDatePicker);
         cbSleap = (CheckBox) findViewById(R.id.cbSleap);
         cbFood = (CheckBox) findViewById(R.id.cbFood);
@@ -85,10 +95,10 @@ public class ListEventActivity extends Activity{
 
         Intent intent = getIntent();
 
-        if(intent.getStringExtra("_tableName").equals("Sleap"))cbSleap.setChecked(true);
-        if(intent.getStringExtra("_tableName").equals("Food"))cbFood.setChecked(true);
-        if(intent.getStringExtra("_tableName").equals("Koliki"))cbKoliki.setChecked(true);
-        if(intent.getStringExtra("_tableName").equals("Walk"))cbWalk.setChecked(true);
+        if (intent.getStringExtra("_tableName").equals("Sleap")) cbSleap.setChecked(true);
+        if (intent.getStringExtra("_tableName").equals("Food")) cbFood.setChecked(true);
+        if (intent.getStringExtra("_tableName").equals("Koliki")) cbKoliki.setChecked(true);
+        if (intent.getStringExtra("_tableName").equals("Walk")) cbWalk.setChecked(true);
 
         dbHelper = new DBHelper(this);
         lvListEventAdapter = new LVListEventAdapter(this, eventArrayList);
@@ -109,34 +119,37 @@ public class ListEventActivity extends Activity{
         cbFood.setOnCheckedChangeListener(CheckChangecbFood);
         cbKoliki.setOnCheckedChangeListener(CheckChangecbKoliki);
         cbWalk.setOnCheckedChangeListener(CheckChangecbWalk);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
     CompoundButton.OnCheckedChangeListener CheckChangecbSleap = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView,
                                      boolean isChecked) {
-            if(isChecked)cbSleap.setChecked(true);
+            if (isChecked) cbSleap.setChecked(true);
             updateLV();
         }
     };
     CompoundButton.OnCheckedChangeListener CheckChangecbFood = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView,
                                      boolean isChecked) {
-            if(isChecked)cbFood.setChecked(true);
+            if (isChecked) cbFood.setChecked(true);
             updateLV();
         }
     };
     CompoundButton.OnCheckedChangeListener CheckChangecbKoliki = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView,
                                      boolean isChecked) {
-            if(isChecked)cbKoliki.setChecked(true);
+            if (isChecked) cbKoliki.setChecked(true);
             updateLV();
         }
     };
     CompoundButton.OnCheckedChangeListener CheckChangecbWalk = new CompoundButton.OnCheckedChangeListener() {
         public void onCheckedChanged(CompoundButton buttonView,
                                      boolean isChecked) {
-            if(isChecked)cbWalk.setChecked(true);
+            if (isChecked) cbWalk.setChecked(true);
             updateLV();
         }
     };
@@ -144,7 +157,7 @@ public class ListEventActivity extends Activity{
 
     public Dialog onCreateDialog(int id) {
         if (id == DIALOG_DATE) {
-            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, year_yyyy, month_MM-1, day_dd);
+            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, year_yyyy, month_MM - 1, day_dd);
             return tpd;
         }
         return super.onCreateDialog(id);
@@ -156,44 +169,44 @@ public class ListEventActivity extends Activity{
                               int dayOfMonth) {
 
             myYear = year;
-            myMonth = monthOfYear+1;
+            myMonth = monthOfYear + 1;
             myDay = dayOfMonth;
 
             yyyy = String.valueOf(myYear);
 
-            if(myMonth<10) MM = "0"+String.valueOf(myMonth);
+            if (myMonth < 10) MM = "0" + String.valueOf(myMonth);
             else MM = String.valueOf(myMonth);
 
-            if(myDay<10) dd = "0"+String.valueOf(myDay);
+            if (myDay < 10) dd = "0" + String.valueOf(myDay);
             else dd = String.valueOf(myDay);
 
-            btnALeDatePicker.setText(dd+"."+MM+"."+yyyy);
+            btnALeDatePicker.setText(dd + "." + MM + "." + yyyy);
             updateLV();
             Log.e(LOG_TAG, "Today is " + myDay + "/" + myMonth + "/" + myYear);
         }
     };
 
-    String getTimeFormat(long _unixSeconds, String _format){
+    String getTimeFormat(long _unixSeconds, String _format) {
 
-        Date _date = new Date(_unixSeconds*1000L);
-        if(_format.equals("yyyy"))
-            if(_unixSeconds<=31536000) return "0000";
+        Date _date = new Date(_unixSeconds * 1000L);
+        if (_format.equals("yyyy"))
+            if (_unixSeconds <= 31536000) return "0000";
             else return sdf_yyyy.format(_date);
 
-        if(_format.equals("MM"))
-            if(_unixSeconds<=2628002) return "00";
+        if (_format.equals("MM"))
+            if (_unixSeconds <= 2628002) return "00";
             else return sdf_MM.format(_date);
 
-        if(_format.equals("dd"))
-            if(_unixSeconds<=86400) return "00";
+        if (_format.equals("dd"))
+            if (_unixSeconds <= 86400) return "00";
             else return sdf_dd.format(_date);
 
-        if(_format.equals("HH"))
-            if(_unixSeconds<=3600) return "00";
-            else if(_unixSeconds<86400) return String.valueOf(_unixSeconds/3600);
+        if (_format.equals("HH"))
+            if (_unixSeconds <= 3600) return "00";
+            else if (_unixSeconds < 86400) return String.valueOf(_unixSeconds / 3600);
             else return sdf_HH.format(_date);
 
-        if(_format.equals("mm"))
+        if (_format.equals("mm"))
             return sdf_mm.format(_date);
 
         return null;
@@ -213,7 +226,7 @@ public class ListEventActivity extends Activity{
         Cursor c = db.query(_tableName, null, null, null, null, null, null);
 
 
-        if(_tableName.equals("Koliki")||_tableName.equals("Food")) {
+        if (_tableName.equals("Koliki") || _tableName.equals("Food")) {
             if (c.moveToFirst()) {
                 int idColIndex = c.getColumnIndex("id");
                 int time = c.getColumnIndex("time");
@@ -239,20 +252,20 @@ public class ListEventActivity extends Activity{
                     else _HH = getTimeFormat(kol, "HH");
 
                     _mm = getTimeFormat(kol, "mm") + "";
-                    if(_yyyy.equals(yyyy)&&_MM.equals(MM)&&_dd.equals(dd))
-                    eventArrayList.add(new LVEvent(_tableName,
-                            _idIconLv, _idFonLvOn,
-                            c.getString(idColIndex),
-                            c.getLong(time), c.getLong(time),
-                            _actionStart,
-                            getTimeFormat(c.getLong(time), "HH") + "-" + getTimeFormat(c.getLong(time), "mm"),
-                            "",
-                            "", //_dd + "." + _MM + "." + _yyyy,
-                            c.getString(mess),
-                            R.drawable.status_stop));
+                    if (_yyyy.equals(yyyy) && _MM.equals(MM) && _dd.equals(dd))
+                        eventArrayList.add(new LVEvent(_tableName,
+                                _idIconLv, _idFonLvOn,
+                                c.getString(idColIndex),
+                                c.getLong(time), c.getLong(time),
+                                _actionStart,
+                                getTimeFormat(c.getLong(time), "HH") + "-" + getTimeFormat(c.getLong(time), "mm"),
+                                getTimeFormat(c.getLong(time), "HH") + "-" + getTimeFormat(c.getLong(time), "mm"), // в время
+                                "", //_dd + "." + _MM + "." + _yyyy,
+                                c.getString(mess),
+                                R.drawable.status_stop));
                 } while (c.moveToNext());
             }
-        }else{
+        } else {
             if (c.moveToFirst()) {
                 // определяем номера столбцов по имени в выборке
                 int idColIndex = c.getColumnIndex("id");
@@ -263,50 +276,49 @@ public class ListEventActivity extends Activity{
 
                 do {
 
-                    long kol = differenceUnixSeconds(c.getLong(time_e),c.getLong(time_s));
+                    long kol = differenceUnixSeconds(c.getLong(time_e), c.getLong(time_s));
 
-                    String _yyyy,_MM,_dd,_HH,_mm;
+                    String _yyyy, _MM, _dd, _HH, _mm;
 
-                    if (getTimeFormat(kol,"yyyy").equals("0000")) _yyyy = "";
-                    else _yyyy = getTimeFormat(kol,"yyyy")+"л/";
+                    if (getTimeFormat(kol, "yyyy").equals("0000")) _yyyy = "";
+                    else _yyyy = getTimeFormat(kol, "yyyy") + "л.";
 
-                    if (getTimeFormat(kol,"MM").equals("00")) _MM = "";
-                    else _MM = getTimeFormat(kol,"MM")+"м/";
+                    if (getTimeFormat(kol, "MM").equals("00")) _MM = "";
+                    else _MM = getTimeFormat(kol, "MM") + "м.";
 
-                    if (getTimeFormat(kol,"dd").equals("00")) _dd = "";
-                    else _dd = getTimeFormat(kol,"dd")+"д/ ";
+                    if (getTimeFormat(kol, "dd").equals("00")) _dd = "";
+                    else _dd = getTimeFormat(kol, "dd") + "д. ";
 
-                    if (getTimeFormat(kol,"HH").equals("00")) _HH = "";
-                    else _HH = getTimeFormat(kol,"HH")+":";
+                    if (getTimeFormat(kol, "HH").equals("00")) _HH = "";
+                    else _HH = getTimeFormat(kol, "HH") + ":";
 
-                    _mm = getTimeFormat(kol,"mm");
+                    _mm = getTimeFormat(kol, "mm");
 
-                    if(getTimeFormat(c.getLong(time_s),"yyyy").equals(yyyy)&&
-                            getTimeFormat(c.getLong(time_s),"MM").equals(MM)&&
-                            getTimeFormat(c.getLong(time_s),"dd").equals(dd)&&
+                    if (getTimeFormat(c.getLong(time_s), "yyyy").equals(yyyy) &&
+                            getTimeFormat(c.getLong(time_s), "MM").equals(MM) &&
+                            getTimeFormat(c.getLong(time_s), "dd").equals(dd) &&
                             c.getString(status_ColIndex).equals("stop"))
-                    eventArrayList.add(new LVEvent(_tableName,
-                            _idIconLv, _idFonLvOff,
-                            c.getString(idColIndex),
-                            c.getLong(time_s),c.getLong(time_e),
-                            _actionStop,
-                            _yyyy+_MM+_dd+_HH+_mm,
-                            getTimeFormat(c.getLong(time_s),"HH")+"-"+getTimeFormat(c.getLong(time_s),"mm"),
-                            getTimeFormat(c.getLong(time_e),"HH")+"-"+getTimeFormat(c.getLong(time_e),"mm"),
-                            c.getString(mess),
-                            R.drawable.status_stop));
+                        eventArrayList.add(new LVEvent(_tableName,
+                                _idIconLv, _idFonLvOff,
+                                c.getString(idColIndex),
+                                c.getLong(time_s), c.getLong(time_e),
+                                _actionStop,
+                                _yyyy + _MM + _dd + _HH + _mm,
+                                getTimeFormat(c.getLong(time_s), "HH") + "-" + getTimeFormat(c.getLong(time_s), "mm"),
+                                getTimeFormat(c.getLong(time_e), "HH") + "-" + getTimeFormat(c.getLong(time_e), "mm"),
+                                c.getString(mess),
+                                R.drawable.status_stop));
                 } while (c.moveToNext());
             }
         }
         c.close();
     }
 
-    long differenceUnixSeconds(long _a,long _b)
-    {
-        return _a-_b;
+    long differenceUnixSeconds(long _a, long _b) {
+        return _a - _b;
     }
-    void updateLV()
-    {
+
+    void updateLV() {
         eventArrayList.clear();
         if (cbSleap.isChecked())
             initData("Sleap", "Спим", "Спали", null, R.drawable.krovat, R.drawable.krovat_w, R.drawable.krovat, R.drawable.fon_lv_sleap_on, R.drawable.fon_lv_sleap_off);
@@ -324,7 +336,16 @@ public class ListEventActivity extends Activity{
 //                return o1.toString().compareTo(o2.toString());
 //            }
 //        });
-        sortedSet.addAll(unsortedSet);
+        //ArrayList<LVEvent> sortedSet = new ArrayList<LVEvent>();
+
+        // List<LVEvent> list = new ArrayList<LVEvent>();
+
+        Collections.sort(eventArrayList, new Comparator<LVEvent>() {
+            public int compare(LVEvent o1, LVEvent o2) {
+                return o1.sortIdTimeS.compareTo(o2.sortIdTimeS);
+            }
+        });
+        //  sortedSet.addAll(unsortedSet);
         lvListEventAdapter.notifyDataSetChanged();
 
     }
@@ -332,6 +353,42 @@ public class ListEventActivity extends Activity{
     @Override
     public void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         updateLV();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "ListEvent Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "ListEvent Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://ru.sappstudio.mothershelper/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }
