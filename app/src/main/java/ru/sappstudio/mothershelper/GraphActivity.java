@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -95,7 +96,7 @@ public class GraphActivity extends Activity {
         DataPoint[] dataPoint = new DataPoint[31];
         // делаем запрос всех данных из таблицы sleap, получаем Cursor
 
-
+        int max_y=3;
         Cursor c = db.query(_tableName, null, null, null, null, null, null);
         if (_tableName.equals("Koliki") || _tableName.equals("Food")) {
 
@@ -122,6 +123,7 @@ public class GraphActivity extends Activity {
                             kol_z++;
 
                     } while (c.moveToNext());
+                    if(kol_z>max_y)max_y=kol_z;
                     dataPoint[i - 1] = new DataPoint(i, kol_z);
                     c.moveToFirst();
                 }
@@ -161,6 +163,7 @@ public class GraphActivity extends Activity {
                     double buf = (double) kol_z/3600;
                     //kol_z = kol_z/3600;
                    // Log.e(LOG_TAG,"buf = "+buf);
+                    if(buf>max_y)max_y=(int)buf;
                     dataPoint[i - 1] = new DataPoint(i, buf);
                     c.moveToFirst();
                 }
@@ -190,7 +193,7 @@ public class GraphActivity extends Activity {
             // set manual X bounds
             graph.getViewport().setYAxisBoundsManual(true);
             graph.getViewport().setMinY(0);
-            graph.getViewport().setMaxY(5);
+            graph.getViewport().setMaxY(max_y+2);
 
             graph.getViewport().setXAxisBoundsManual(true);
             graph.getViewport().setMinX(1);
@@ -210,20 +213,35 @@ public class GraphActivity extends Activity {
                 series.setColor(Color.parseColor("#55AAFF"));
             if (_tableName.equals("Food"))
                 series.setColor(Color.parseColor("#8efe59"));
-            if (_tableName.equals("Sleap"))
+            if (_tableName.equals("Sleap")) {
                 series.setColor(Color.parseColor("#d753f4"));
-            if (_tableName.equals("Walk"))
+            }
+            if (_tableName.equals("Walk")) {
                 series.setColor(Color.parseColor("#fa7548"));
+            }
 
             // set manual X bounds
             graph.getViewport().setYAxisBoundsManual(true);
             graph.getViewport().setMinY(0);
-            graph.getViewport().setMaxY(3);
+            graph.getViewport().setMaxY(max_y+2);
 
 
             graph.getViewport().setXAxisBoundsManual(true);
             graph.getViewport().setMinX(1);
             graph.getViewport().setMaxX(31);
+            // styling
+            series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                @Override
+                public int get(DataPoint data) {
+                    return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                }
+            });
+
+            series.setSpacing(50);
+
+            // draw values on top подпись значения
+//            series.setDrawValuesOnTop(true);
+//            series.setValuesOnTopColor(Color.RED);
 
             // enable scaling and scrolling
             graph.getViewport().setScrollable(true); // enables horizontal scrolling
@@ -238,15 +256,15 @@ public class GraphActivity extends Activity {
 
 
 
-    String getTimeFormat(long _unixSeconds, String _format){
+    public String getTimeFormat(long _unixSeconds, String _format){
 
         Date _date = new Date(_unixSeconds*1000L);
         if(_format.equals("yyyy"))
-            if(_unixSeconds<=31536000) return "0000";
+            if(_unixSeconds<=31556926) return "0000";
             else return sdf_yyyy.format(_date);
 
         if(_format.equals("MM"))
-            if(_unixSeconds<=2628002) return "00";
+            if(_unixSeconds<=2629743) return "00";
             else return sdf_MM.format(_date);
 
         if(_format.equals("dd"))

@@ -138,15 +138,15 @@ public class MessActivity extends Activity {
 
     }
 
-    String getTimeFormat(long _unixSeconds, String _format){
+    public String getTimeFormat(long _unixSeconds, String _format){
 
         Date _date = new Date(_unixSeconds*1000L);
         if(_format.equals("yyyy"))
-            if(_unixSeconds<=31536000) return "0000";
+            if(_unixSeconds<=31556926) return "0000";
             else return sdf_yyyy.format(_date);
 
         if(_format.equals("MM"))
-            if(_unixSeconds<=2628002) return "00";
+            if(_unixSeconds<=2629743) return "00";
             else return sdf_MM.format(_date);
 
         if(_format.equals("dd"))

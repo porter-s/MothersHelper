@@ -25,12 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Spinner
-                    android:id="@+id/sAnDBrEvent"
-                    android:layout_width="150dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|top">
-                </Spinner>
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Sleap"
+                    android:id="@+id/tvAchDBTableName"
+                    android:layout_gravity="center_horizontal"/>
             </FrameLayout>
 
         </LinearLayout>
@@ -56,7 +57,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="02.03.2017"
-                    android:id="@+id/bnAnDBrDate_s"
+                    android:id="@+id/bAchDBDate_s"
                     android:layout_gravity="right|top"/>
             </FrameLayout>
 
@@ -83,7 +84,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text="02.03.2017"
-                    android:id="@+id/bnAnDBrDate_e"
+                    android:id="@+id/bAchDBDate_e"
                     android:layout_gravity="right|top"/>
             </FrameLayout>
 
@@ -109,7 +110,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text=":-:"
-                    android:id="@+id/btAnDBrTime_s"
+                    android:id="@+id/bAchDBTime_s"
                     android:layout_gravity="right|top" />
             </FrameLayout>
 
@@ -137,7 +138,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:text=":-:"
-                    android:id="@+id/btAnDBrTime_e"
+                    android:id="@+id/bAchDBTime_e"
                     android:layout_gravity="right|top" />
             </FrameLayout>
 
@@ -153,16 +154,37 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/etAnDBrMess" />
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Добавить"
-            android:id="@+id/bAnDBrAdd"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:background="#4af750"
-            android:layout_gravity="center_horizontal|right"/>
+            android:id="@+id/etAchDBMess" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Удалить"
+                android:id="@+id/bAchDBDelete"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="#fd342d"
+                />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Изменить"
+                    android:id="@+id/bAchDBCh"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="#4af750"
+                    android:layout_gravity="right"
+                    />
+            </FrameLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
     <RelativeLayout
@@ -174,7 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Назад"
-            android:id="@+id/bAnDBrBack"
+            android:id="@+id/bAchDBBack"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:background="#4ae5f7" />

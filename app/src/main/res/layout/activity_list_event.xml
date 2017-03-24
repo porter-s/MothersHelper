@@ -12,66 +12,78 @@
         android:id="@+id/btnALeDatePicker"
         android:background="#38eaf7" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_gravity="center_horizontal">
+        android:layout_weight="5">
 
-        <CheckBox
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/cbSleap" />
+            android:layout_gravity="center_horizontal">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cbSleap" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/krovat"
+                android:id="@+id/imageView" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cbFood" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/but"
+                android:id="@+id/imageView2" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cbKoliki" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/koliki"
+                android:id="@+id/imageView3" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cbWalk" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/kolaska"
+                android:id="@+id/imageView4" />
+        </LinearLayout>
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/krovat"
-            android:id="@+id/imageView" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cbFood" />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/but"
-            android:id="@+id/imageView2" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cbKoliki" />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/koliki"
-            android:id="@+id/imageView3" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cbWalk" />
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/kolaska"
-            android:id="@+id/imageView4" />
-    </LinearLayout>
+            android:layout_marginRight="5dp"
+            android:id="@+id/btnAleAdd"
+            android:scaleType="fitXY"
+            android:src="@drawable/plus"
+            android:layout_gravity="right|center_vertical" />
+    </FrameLayout>
 
     <ListView
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:id="@+id/lvAle"
         android:layout_height="0dp"
-        android:layout_weight="80"/>
+        android:layout_weight="79"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -87,12 +99,5 @@
             android:layout_alignParentEnd="true"
             android:background="#4ae5f7" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:background="#5ef74a"
-            android:id="@+id/btnAleAdd" />
     </RelativeLayout>
 </LinearLayout>

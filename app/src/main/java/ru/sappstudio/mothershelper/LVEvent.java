@@ -62,26 +62,26 @@ public class LVEvent {
         SimpleDateFormat sdf_mm = new SimpleDateFormat("mm");
         int time_mm = Integer.valueOf(sdf_mm.format(date));
 
-        Date _date = new Date(_unixSeconds*1000L);
-        if(_format.equals("yyyy"))
-            if(_unixSeconds<=31536000) return "0000";
-            else return sdf_yyyy.format(_date);
+            Date _date = new Date(_unixSeconds*1000L);
+            if(_format.equals("yyyy"))
+                if(_unixSeconds<=31556926) return "0000";
+                else return sdf_yyyy.format(_date);
 
-        if(_format.equals("MM"))
-            if(_unixSeconds<=2628002) return "00";
-            else return sdf_MM.format(_date);
+            if(_format.equals("MM"))
+                if(_unixSeconds<=2629743) return "00";
+                else return sdf_MM.format(_date);
 
-        if(_format.equals("dd"))
-            if(_unixSeconds<=86400) return "00";
-            else return sdf_dd.format(_date);
+            if(_format.equals("dd"))
+                if(_unixSeconds<=86400) return "00";
+                else return sdf_dd.format(_date);
 
-        if(_format.equals("HH"))
-            if(_unixSeconds<=3600) return "00";
-            else if(_unixSeconds<86400) return String.valueOf(_unixSeconds/3600);
-            else return sdf_HH.format(_date);
+            if(_format.equals("HH"))
+                if(_unixSeconds<=3600) return "00";
+                else if(_unixSeconds<86400) return String.valueOf(_unixSeconds/3600);
+                else return sdf_HH.format(_date);
 
-        if(_format.equals("mm"))
-            return sdf_mm.format(_date);
+            if(_format.equals("mm"))
+                return sdf_mm.format(_date);
 
         return null;
     }

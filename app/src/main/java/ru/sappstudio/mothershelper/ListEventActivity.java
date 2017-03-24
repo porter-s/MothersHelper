@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.android.gms.appindexing.Action;
@@ -101,11 +102,11 @@ public class ListEventActivity extends Activity {
         if (intent.getStringExtra("_tableName").equals("Walk")) cbWalk.setChecked(true);
 
         final String _str = intent.getStringExtra("_tableName");
-        Button btnAleAdd = (Button) findViewById(R.id.btnAleAdd);
+        ImageView btnAleAdd = (ImageView) findViewById(R.id.btnAleAdd);
         btnAleAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_add = new Intent(ListEventActivity.this,NewDBRecord.class);
+                Intent intent_add = new Intent(ListEventActivity.this,NewDBRecordActivity.class);
                 intent_add.putExtra("_tableName",_str);
                 startActivity(intent_add);
             }
