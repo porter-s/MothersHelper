@@ -117,6 +117,23 @@ public class NewDBRecordActivity extends Activity {
                                 if(minute<10)  mm_s = "0"+String.valueOf(minute);
                                 else mm_s = String.valueOf(minute);
 
+                                if(Integer.valueOf(HH_e)<hourOfDay)
+                                    if(Integer.valueOf(mm_e)<minute)
+                                    {
+                                        if(hourOfDay<10)  HH_e = "0"+String.valueOf(hourOfDay);
+                                        else HH_e = String.valueOf(hourOfDay);
+
+                                        if(minute+5<10)  mm_e = "0"+String.valueOf(minute+5);
+                                        else mm_e = String.valueOf(minute+5);
+
+
+                                    }
+                                if(tableN.equals("Koliki")||tableN.equals("Food"))
+                                {
+                                    HH_e = HH_s;
+                                    mm_e = mm_s;
+                                }
+                                btAnDBrTime_e.setText(HH_e + ":" + mm_e);
                                 btAnDBrTime_s.setText(HH_s + ":" + mm_s);
                                 Log.e(LOG_TAG,"hourOfDay + minute ="+hourOfDay + ":" + minute);
                                 //txtTime.setText(hourOfDay + ":" + minute);
@@ -328,6 +345,12 @@ public class NewDBRecordActivity extends Activity {
 
             if (myDay < 10) dd_s = "0" + String.valueOf(myDay);
             else dd_s = String.valueOf(myDay);
+
+            yyyy_e = yyyy_s;
+            MM_e=MM_s;
+            dd_e=dd_s;
+
+            bnAnDBrDate_e.setText(dd_e + "." + MM_e + "." + yyyy_e);
 
             bnAnDBrDate_s.setText(dd_s + "." + MM_s + "." + yyyy_s);
             Log.e(LOG_TAG, "Today is " + myDay + "/" + myMonth + "/" + myYear);

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -104,7 +105,21 @@ public class ChDBActivity extends Activity {
 //        final Spinner spinner = (Spinner) findViewById(R.id.sAnDBrEvent);
 //        spinner.setAdapter(adapter);
 
+
+//        TextView tvAchDBTime_e =(TextView)findViewById(R.id.tvAchDBTime_e);
+//        TextView tvAchDBDate_e =(TextView)findViewById(R.id.tvAchDBDate_e);
         // int mHour=0,mMinute=0;
+        if(_tableName.equals("Koliki")||_tableName.equals("Food"))
+        {
+            LinearLayout llAchDBDate_e =(LinearLayout)findViewById(R.id.llAchDBDate_e);
+            LinearLayout llAchDBTime_e =(LinearLayout)findViewById(R.id.llAchDBTime_e);
+            llAchDBDate_e.setVisibility(View.GONE);
+            llAchDBTime_e.setVisibility(View.GONE);
+//            bAchDBDate_e.setVisibility(View.INVISIBLE);
+//            bAchDBTime_e.setVisibility(View.INVISIBLE);
+//            tvAchDBTime_e.setVisibility(View.INVISIBLE);
+//            tvAchDBDate_e.setVisibility(View.INVISIBLE);
+        }
         bAchDBTime_s.setText(HH_s+":"+mm_s);
         bAchDBTime_s.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +141,25 @@ public class ChDBActivity extends Activity {
                                 if(minute<10)  mm_s = "0"+String.valueOf(minute);
                                 else mm_s = String.valueOf(minute);
 
+                                if(Integer.valueOf(HH_e)<hourOfDay)
+                                    if(Integer.valueOf(mm_e)<minute)
+                                    {
+                                        if(hourOfDay<10)  HH_e = "0"+String.valueOf(hourOfDay);
+                                        else HH_e = String.valueOf(hourOfDay);
+
+                                        if(minute+5<10)  mm_e = "0"+String.valueOf(minute+5);
+                                        else mm_e = String.valueOf(minute+5);
+
+                                        bAchDBTime_e.setText(HH_e + ":" + mm_e);
+                                    }
+                                if(_tableName.equals("Koliki")||_tableName.equals("Food"))
+                                {
+                                    HH_e = HH_s;
+                                    mm_e = mm_s;
+                                }
+
                                 bAchDBTime_s.setText(HH_s + ":" + mm_s);
+
                                 Log.e(LOG_TAG,"hourOfDay + minute ="+hourOfDay + ":" + minute);
                                 //txtTime.setText(hourOfDay + ":" + minute);
                             }
@@ -231,8 +264,6 @@ public class ChDBActivity extends Activity {
                 Log.e(LOG_TAG,"yyyy_s="+yyyy_s+" MM_s="+MM_s+" dd_s="+dd_s);
                 Log.e(LOG_TAG,"time_s="+time_s+" time_e="+time_e+" unixs="+unixSeconds);
                 if(time_s!=0&&time_e!=0&&time_e>=time_s&&!tableN.equals("")){
-
-
                     DBHelper dbHelper = new DBHelper(ChDBActivity.this);
                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                     Cursor c = db.query(tableN, null, null, null, null, null, null);
@@ -353,6 +384,12 @@ public class ChDBActivity extends Activity {
 
             if (myDay < 10) dd_s = "0" + String.valueOf(myDay);
             else dd_s = String.valueOf(myDay);
+
+            yyyy_e = yyyy_s;
+            MM_e=MM_s;
+            dd_e=dd_s;
+
+            bAchDBDate_e.setText(dd_e + "." + MM_e + "." + yyyy_e);
 
             bAchDBDate_s.setText(dd_s + "." + MM_s + "." + yyyy_s);
             Log.e(LOG_TAG, "Today is " + myDay + "/" + myMonth + "/" + myYear);

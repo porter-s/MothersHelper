@@ -66,14 +66,15 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:id="@+id/llAchDBDate_e">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Дата конца:"
-                android:id="@+id/textView4" />
+                android:id="@+id/tvAchDBDate_e" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -121,14 +122,15 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:id="@+id/llAchDBTime_e">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Время конца:"
-                android:id="@+id/textView5" />
+                android:id="@+id/tvAchDBTime_e" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -148,7 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Сообщение:"
+            android:text="Заметка:"
             android:id="@+id/textView6" />
 
         <EditText
