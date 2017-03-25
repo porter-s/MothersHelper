@@ -252,7 +252,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         c.close();
     }
 
-    public void clickWalk()    //обновляем дату(и время)
+    public void clickWalk()
     {
         // создаем объект для данных
         ContentValues cv = new ContentValues();
@@ -370,7 +370,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         c.close();
     }
 
-    public void clickFood()    //обновляем дату(и время)
+    public void clickFood()
     {
         // создаем объект для данных
         ContentValues cv = new ContentValues();
@@ -466,7 +466,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         c.close();
     }
 
-    public void clickKoliki()    //обновляем дату(и время)
+    public void clickKoliki()
     {
         // создаем объект для данных
         ContentValues cv = new ContentValues();
