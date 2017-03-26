@@ -58,17 +58,19 @@ public class Widget extends AppWidgetProvider {
     }
 
     @Override
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager,
-                         int[] appWidgetIds) {
+    public  void onUpdate(Context context, AppWidgetManager appWidgetManager,
+                                int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 //        RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
         // обновляем все экземпляры
-        for (int i : appWidgetIds) {
 
+        for (int i : appWidgetIds) {
 //            appWidgetManager.notifyAppWidgetViewDataChanged(i, R.id.lvWEvents);
             updateWidget(context, appWidgetManager, i);
             Log.e(LOG_TAG, "onUpdate " + Arrays.toString(appWidgetIds));
         }
+//        Intent intent = new Intent(context, UpdateWidgetService.class);
+//        context.startService(intent);
 
     }
 
@@ -89,7 +91,7 @@ public class Widget extends AppWidgetProvider {
         RemoteViews widgetView = new RemoteViews(ctx.getPackageName(),
                 R.layout.widget);
 
-        setList(widgetView, ctx, widgetID);
+       // setList(widgetView, ctx, widgetID);
 
         // Обновление виджета (Sleap)
         Intent countIntent = new Intent(ctx, Widget.class);
@@ -122,6 +124,9 @@ public class Widget extends AppWidgetProvider {
         // Обновляем виджет
         appWidgetManager.notifyAppWidgetViewDataChanged(widgetID, R.id.lvWEvents);
         appWidgetManager.updateAppWidget(widgetID, widgetView);
+
+//        Intent intent = new Intent(ctx, UpdateWidgetService.class);
+//        ctx.startService(intent);
        // Log.e(LOG_TAG,"klick");
     }
 
