@@ -8,14 +8,14 @@
         android:id="@+id/lvWEvents"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="70">
+        android:layout_weight="75">
 
     </ListView>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="30"
+        android:layout_weight="25"
         >
 
         <ImageButton
@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:id="@+id/btnWSleap"
             android:layout_weight="25"
-            android:src="@drawable/krovat_w"
+            android:src="@drawable/button_sleap"
             android:scaleType="fitCenter"
             android:background="#d753f4" />
 
@@ -82,7 +82,7 @@
             android:layout_height="match_parent"
             android:id="@+id/btnWWalk"
             android:layout_weight="25"
-            android:src="@drawable/kolaska_w"
+            android:src="@drawable/button_walk"
             android:scaleType="fitCenter"
             android:background="#fa7548" />
 
