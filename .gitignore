@@ -1,3 +1,7 @@
+/app/src/main/res/drawable/button_food.xml
+/app/src/main/res/drawable/button_koliki.xml
+/app/src/main/res/drawable/button_sleap.xml
+/app/src/main/res/drawable/button_walk.xml
 *.iml
 .gradle
 /local.properties
